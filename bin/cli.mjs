@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // @rokoai/arch-diagram: installs the skill into Claude Code and Codex, and runs its scripts.
-//   npx @rokoai/arch-diagram install   [--claude] [--codex] [--project] [--dir <path>]
-//   npx @rokoai/arch-diagram uninstall [--claude] [--codex] [--project] [--dir <path>]
-//   npx @rokoai/arch-diagram build|check|export <args…>
+//   node bin/cli.mjs install   [--claude] [--codex] [--project] [--dir <path>]
+//   node bin/cli.mjs uninstall [--claude] [--codex] [--project] [--dir <path>]
+//   node bin/cli.mjs build|check|export <args…>
 import { cpSync, existsSync, rmSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';

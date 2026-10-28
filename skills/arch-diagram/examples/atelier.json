@@ -1,0 +1,166 @@
+{
+  "lang": "zh-CN",
+  "width": 1080,
+  "title": "把复杂系统，讲清楚。",
+  "subtitle": "ARCH DIAGRAM / ATELIER   ·   从可信来源到可分享的动态架构图",
+  "layers": [
+    {
+      "id": "input",
+      "label": "输入来源",
+      "color": "blue"
+    },
+    {
+      "id": "core",
+      "label": "理解与建模",
+      "color": "cyan"
+    },
+    {
+      "id": "output",
+      "label": "呈现与交付",
+      "color": "purple"
+    }
+  ],
+  "flows": [
+    {
+      "id": "data",
+      "label": "内容流",
+      "color": "cyan"
+    },
+    {
+      "id": "render",
+      "label": "渲染流",
+      "color": "purple"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "source",
+      "x": 40,
+      "y": 175,
+      "w": 260,
+      "h": 116,
+      "title": "01 / 读取来源",
+      "short": "读取来源",
+      "sub": "仓库 · 文章 · 本地项目",
+      "lines": [
+        "保留源码中的真实关系",
+        "识别入口、服务与数据层"
+      ],
+      "layer": "input"
+    },
+    {
+      "id": "model",
+      "x": 410,
+      "y": 175,
+      "w": 260,
+      "h": 116,
+      "title": "02 / 架构建模",
+      "short": "架构建模",
+      "sub": "结构先行，配色表达语义",
+      "lines": [
+        "按内容选择布局结构",
+        "每条连接都有明确含义"
+      ],
+      "layer": "core"
+    },
+    {
+      "id": "schema",
+      "x": 780,
+      "y": 175,
+      "w": 260,
+      "h": 116,
+      "title": "03 / 可编辑规格",
+      "short": "可编辑规格",
+      "sub": "JSON 作为唯一内容来源",
+      "lines": [
+        "节点、分组、流向与标签",
+        "修改规格即可重新生成"
+      ],
+      "layer": "core"
+    },
+    {
+      "id": "deliver",
+      "x": 40,
+      "y": 395,
+      "w": 260,
+      "h": 116,
+      "title": "06 / 分享与复用",
+      "short": "分享与复用",
+      "sub": "HTML · PNG · MP4 · GIF",
+      "lines": [
+        "单文件 HTML 离线可用",
+        "Mermaid 便于继续编辑"
+      ],
+      "layer": "output"
+    },
+    {
+      "id": "check",
+      "x": 410,
+      "y": 395,
+      "w": 260,
+      "h": 116,
+      "title": "05 / 布局检查",
+      "short": "布局检查",
+      "sub": "自动检查 + 截图审视",
+      "lines": [
+        "检测溢出、重叠和穿线",
+        "检查通过后再交付"
+      ],
+      "layer": "core"
+    },
+    {
+      "id": "engine",
+      "x": 780,
+      "y": 395,
+      "w": 260,
+      "h": 116,
+      "title": "04 / 动态渲染",
+      "short": "动态渲染",
+      "sub": "自包含 HTML / CSS / SVG",
+      "lines": [
+        "语义连线与流动光点",
+        "支持暂停与原始尺寸"
+      ],
+      "layer": "output"
+    }
+  ],
+  "edges": [
+    {
+      "to": "model.l",
+      "label": "提取事实",
+      "flow": "data",
+      "from": "source.r"
+    },
+    {
+      "to": "schema.l",
+      "label": "生成规格",
+      "flow": "data",
+      "from": "model.r"
+    },
+    {
+      "to": "engine.t",
+      "label": "构建页面",
+      "flow": "render",
+      "from": "schema.b"
+    },
+    {
+      "to": "check.r",
+      "label": "检查画面",
+      "flow": "render",
+      "from": "engine.l"
+    },
+    {
+      "to": "deliver.r",
+      "label": "导出成品",
+      "flow": "render",
+      "from": "check.l"
+    }
+  ],
+  "log": {
+    "title": "模拟 trace · 演示处理流程，非实时监控",
+    "live": {
+      "rows": 4
+    },
+    "y": 590
+  }
+}

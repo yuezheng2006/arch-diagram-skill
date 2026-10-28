@@ -1,9 +1,11 @@
-Draw the diagram as a single HTML page in a dark "terminal blueprint" style, matching the attached screenshot.
+# Atelier visual language
 
-- Colors: background #0b0f14, text #c9d1d9, secondary text #7d8590, hairlines #3a4450. Accent colors mark the layer of each element: blue #79a8ff, cyan #5ad1e6, green #6fdc8c, amber #e8b25d, purple #b48cff; red #ff7b72 only for errors.
-- Type: monospace only (JetBrains Mono / SF Mono / Menlo, PingFang SC for Chinese), 13px body, 11px labels, bold white titles.
-- Boxes: sharp rectangles with a 1px border in the layer color; centered title, a colored subtitle, one or two short dim lines. No rounded corners, shadows, gradients or icons. Dashed border means planned or optional.
-- Status badges sit on the top-right border line, cutting it: ● running (green, soft pulse), ▲ warning, ◐ in progress, ■ stopped, ○ not created, ✓ done.
-- Connectors: thin orthogonal lines with right-angle turns and small arrowheads, colored by source; solid for sync, dashed for async. Tiny dim text labels on every line; small dots at junctions. Route long lines along the outer edges so nothing crosses a box.
-- Group titles and panel legends sit on the border line, like a fieldset legend.
-- Overall: dense, precise, engineering-schematic feel; generous dark space between rows; a small legend at the top explaining colors and badges.
+The engine implements this style; edit the spec for content and layout.
+
+- Navy canvas `#0a101c`, panels `#111c2d`, subtle dot grid and a restrained outer shadow.
+- Rounded modules (10px), groups (14px), and canvas (18px). Borders use muted semantic accents; hovering emphasizes the module.
+- Body 13px monospace with local CJK fallbacks; module and page titles use system sans for a quieter hierarchy. No remote fonts or external assets.
+- Blue, cyan, green, amber and purple encode element kinds and flow meanings. Red indicates failure. Keep legends accurate.
+- Orthogonal wires, small moving packets and compact trace rows retain the upstream renderer and export timing.
+- Toolbar provides pause/resume and actual-size/fit controls, with keyboard focus indicators and pressed states. It is outside the export canvas and hidden in check/loop modes.
+- Reduced motion disables animation; PNG output uses the deterministic check mode. Keep content coordinates compatible with upstream specs.
