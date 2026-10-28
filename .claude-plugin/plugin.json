@@ -1,12 +1,12 @@
 {
   "name": "arch-diagram",
   "version": "1.2.2",
-  "description": "Turn a GitHub repo, article, PDF or local project into an animated terminal-blueprint architecture diagram: HTML, PNG, looping MP4/GIF or Mermaid, with a live trace log.",
+  "description": "Turn a GitHub repo, article, PDF or local project into an animated Atelier architecture diagram: HTML, PNG, looping MP4/GIF or Mermaid, with a live trace log.",
   "author": {
     "name": "bassnova42"
   },
-  "homepage": "https://github.com/bassnova42/arch-diagram-skill",
-  "repository": "https://github.com/bassnova42/arch-diagram-skill",
+  "homepage": "https://github.com/yuezheng2006/arch-diagram-skill",
+  "repository": "https://github.com/yuezheng2006/arch-diagram-skill",
   "license": "MIT",
   "keywords": [
     "architecture",

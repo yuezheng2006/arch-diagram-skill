@@ -1,3 +1,44 @@
+# Arch Diagram · Atelier 定制版
+
+基于 [bassnova42/arch-diagram-skill](https://github.com/bassnova42/arch-diagram-skill) 的 MIT fork，面向月政的中文技术演示场景。保留上游作者署名及许可证。
+
+默认采用深蓝点阵画布、圆角模块、克制的语义配色与中文字体回退。新增暂停/继续动画、原始尺寸/适应窗口按钮，支持键盘操作与减少动态效果偏好；控制栏不会进入导出画面。
+
+![Atelier 预览](docs/atelier.png)
+
+下载 `docs/atelier.html` 后可离线打开交互示例；`skills/arch-diagram/examples/atelier.json` 是可编辑源文件。示例是本技能自身的处理流程示意，动态 trace 表示模拟数据交换，不是真实运行监控。
+
+## 安装定制版
+
+```bash
+git clone https://github.com/yuezheng2006/arch-diagram-skill.git
+cd arch-diagram-skill
+node bin/cli.mjs install
+```
+
+也可使用插件：
+
+```bash
+codex plugin marketplace add yuezheng2006/arch-diagram-skill
+codex plugin add arch-diagram@arch-diagram
+```
+
+不要使用上游 npm 安装命令来获取这个定制版。此 fork 尚未发布 npm 包。安装后重启对应 Agent，在 Codex 中使用 `$arch-diagram 把当前项目画成中文动态架构图`。
+
+## 构建与导出
+
+```bash
+node bin/cli.mjs build skills/arch-diagram/examples/atelier.json docs/atelier.html
+node bin/cli.mjs check docs/atelier.html
+node bin/cli.mjs export docs/atelier.html docs/atelier.png docs/atelier.mmd
+```
+
+Node ≥18；检查/截图需要 Chrome、Chromium 或 Edge；MP4/GIF 还需要 ffmpeg。HTML 完全自包含。其他命令和上游功能如下。
+
+验证：`node tests/controls.mjs` 检查真实浏览器中的暂停/继续、窄屏尺寸切换、窗口变化与减少动态效果。所有内置示例均通过布局检查；视频循环接缝 PSNR 为 73.25 dB。
+
+---
+
 <p align="center">
   <b>简体中文</b> · <a href="docs/README.en.md">English</a> · <a href="docs/README.es.md">Español</a> · <a href="docs/README.ja.md">日本語</a> · <a href="docs/README.ko.md">한국어</a> · <a href="docs/README.th.md">ไทย</a>
 </p>
@@ -44,31 +85,31 @@
 **方式一：npm**（最简单）
 
 ```bash
-npx @rokoai/arch-diagram install
+node bin/cli.mjs install
 ```
 
-会装到 `~/.claude/skills/arch-diagram`。加 `--project` 则装到当前项目的 `.claude/skills/`。更新时再跑一次；卸载用 `npx @rokoai/arch-diagram uninstall`。
+会装到 `~/.claude/skills/arch-diagram`。加 `--project` 则装到当前项目的 `.claude/skills/`。更新时再跑一次；卸载用 `node bin/cli.mjs uninstall`。
 
 装了 Codex 的话（存在 `~/.codex`），会同时装到 `~/.codex/skills/arch-diagram`。只装其中一个，可以加 `--claude` 或 `--codex`。
 
 **方式二：插件**。Claude Code 里依次执行：
 
 ```
-/plugin marketplace add bassnova42/arch-diagram-skill
+/plugin marketplace add yuezheng2006/arch-diagram-skill
 /plugin install arch-diagram@arch-diagram
 ```
 
 Codex CLI 里：
 
 ```bash
-codex plugin marketplace add bassnova42/arch-diagram-skill
+codex plugin marketplace add yuezheng2006/arch-diagram-skill
 codex plugin add arch-diagram@arch-diagram
 ```
 
 **方式三：手动拷贝**
 
 ```bash
-git clone https://github.com/bassnova42/arch-diagram-skill
+git clone https://github.com/yuezheng2006/arch-diagram-skill
 cp -R arch-diagram-skill/skills/arch-diagram ~/.claude/skills/
 cp -R arch-diagram-skill/skills/arch-diagram ~/.codex/skills/   # Codex
 ```
@@ -87,9 +128,9 @@ cp -R arch-diagram-skill/skills/arch-diagram ~/.codex/skills/   # Codex
 图的源文件是 `<slug>.spec.json`，要修改就让 Claude Code 或 Codex 改 spec，再重新生成。也可以用命令行直接操作：
 
 ```bash
-npx @rokoai/arch-diagram build  my.spec.json my.html
-npx @rokoai/arch-diagram check  my.html
-npx @rokoai/arch-diagram export my.html my.png my.mp4 --seconds 30
+node bin/cli.mjs build  my.spec.json my.html
+node bin/cli.mjs check  my.html
+node bin/cli.mjs export my.html my.png my.mp4 --seconds 30
 ```
 
 ## 目录

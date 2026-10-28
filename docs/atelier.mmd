@@ -1,0 +1,22 @@
+flowchart LR
+  %% 把复杂系统，讲清楚。
+  source["<b>01 / 读取来源</b><br/>仓库 · 文章 · 本地项目<br/>保留源码中的真实关系<br/>识别入口、服务与数据层"]:::input
+  model["<b>02 / 架构建模</b><br/>结构先行，配色表达语义<br/>按内容选择布局结构<br/>每条连接都有明确含义"]:::core
+  schema["<b>03 / 可编辑规格</b><br/>JSON 作为唯一内容来源<br/>节点、分组、流向与标签<br/>修改规格即可重新生成"]:::core
+  deliver["<b>06 / 分享与复用</b><br/>HTML · PNG · MP4 · GIF<br/>单文件 HTML 离线可用<br/>Mermaid 便于继续编辑"]:::output
+  check["<b>05 / 布局检查</b><br/>自动检查 + 截图审视<br/>检测溢出、重叠和穿线<br/>检查通过后再交付"]:::core
+  engine["<b>04 / 动态渲染</b><br/>自包含 HTML / CSS / SVG<br/>语义连线与流动光点<br/>支持暂停与原始尺寸"]:::output
+  source -->|"提取事实"| model
+  model -->|"生成规格"| schema
+  schema -->|"构建页面"| engine
+  engine -->|"检查画面"| check
+  check -->|"导出成品"| deliver
+  linkStyle 0 stroke:#5ad1e6,stroke-width:1.5px
+  linkStyle 1 stroke:#5ad1e6,stroke-width:1.5px
+  linkStyle 2 stroke:#b48cff,stroke-width:1.5px
+  linkStyle 3 stroke:#b48cff,stroke-width:1.5px
+  linkStyle 4 stroke:#b48cff,stroke-width:1.5px
+  classDef input fill:#0e141b,stroke:#79a8ff,color:#c9d1d9
+  classDef core fill:#0e141b,stroke:#5ad1e6,color:#c9d1d9
+  classDef output fill:#0e141b,stroke:#b48cff,color:#c9d1d9
+  classDef none fill:#0e141b,stroke:#3a4450,color:#c9d1d9

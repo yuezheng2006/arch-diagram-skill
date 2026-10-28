@@ -523,5 +523,38 @@
     if (useZoom) stage.style.zoom = k; else stage.style.transform = `scale(${k})`;
     fit.style.height = (H * k) + 'px';
   }
-  addEventListener('resize', scale); scale();
+  addEventListener('resize', () => scale()); scale();
+
+  // Controls stay outside the canvas; exports preserve the original framing.
+  if (!CHECK && !LOOP) {
+    const zh = String(S.lang || 'zh').startsWith('zh');
+    const bar = el('nav', 'toolbar', null);
+    bar.setAttribute('aria-label', zh ? '架构图控制' : 'Diagram controls');
+    document.body.insertBefore(bar, fit);
+    el('span', 'brand', 'ARCH / ATELIER', bar);
+    const pause = el('button', null, zh ? '暂停动画' : 'Pause motion', bar);
+    pause.type = 'button'; pause.disabled = STILL;
+    pause.setAttribute('aria-pressed', 'false');
+    pause.addEventListener('click', () => {
+      const paused = document.documentElement.classList.toggle('paused');
+      if (paused) svg.pauseAnimations(); else svg.unpauseAnimations();
+      pause.textContent = zh ? (paused ? '继续动画' : '暂停动画') : (paused ? 'Resume motion' : 'Pause motion');
+      pause.setAttribute('aria-pressed', String(paused));
+    });
+    let actual = false;
+    const zoom = el('button', null, zh ? '原始尺寸' : 'Actual size', bar);
+    zoom.type = 'button'; zoom.setAttribute('aria-pressed', 'false');
+    const resize = scale;
+    scale = function () {
+      if (!actual) { resize(); return; }
+      if (useZoom) stage.style.zoom = 1; else stage.style.transform = 'none';
+      fit.style.height = H + 'px';
+    };
+    zoom.addEventListener('click', () => {
+      actual = !actual;
+      fit.style.overflowX = actual ? 'auto' : 'hidden';
+      zoom.textContent = zh ? (actual ? '适应窗口' : '原始尺寸') : (actual ? 'Fit to window' : 'Actual size');
+      zoom.setAttribute('aria-pressed', String(actual)); scale();
+    });
+  }
 })();

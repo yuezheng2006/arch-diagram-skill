@@ -1,7 +1,7 @@
 {
-  "name": "@rokoai/arch-diagram",
+  "name": "@yuezheng2006/arch-diagram",
   "version": "1.2.2",
-  "description": "Claude Code & Codex skill: turn any repo or article into an animated architecture diagram (HTML / PNG / MP4 / GIF / Mermaid) with a live trace log",
+  "description": "Atelier fork: polished Chinese-ready animated architecture diagrams, offline HTML and multi-format exports",
   "type": "module",
   "bin": {
     "arch-diagram": "bin/cli.mjs"
@@ -30,12 +30,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bassnova42/arch-diagram-skill.git"
+    "url": "git+https://github.com/yuezheng2006/arch-diagram-skill.git"
   },
-  "homepage": "https://github.com/bassnova42/arch-diagram-skill#readme",
+  "homepage": "https://github.com/yuezheng2006/arch-diagram-skill#readme",
   "author": "bassnova42",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "private": true
 }
