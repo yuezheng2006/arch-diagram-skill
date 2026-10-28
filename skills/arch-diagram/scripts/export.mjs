@@ -131,8 +131,8 @@ async function capture(W, H, seconds) {
 // ---------- Mermaid ----------
 function mermaid(out, fenced) {
   const S = readSpec(htmlPath);
-  const HEX = { blue: '#79a8ff', cyan: '#5ad1e6', green: '#6fdc8c', amber: '#e8b25d', purple: '#b48cff', red: '#ff7b72',
-                orange: '#ff9e3d', text: '#c9d1d9', dim: '#7d8590', faint: '#3a4450' };
+  const HEX = { blue: '#365d78', cyan: '#21695f', green: '#35663c', amber: '#885f25', purple: '#6c5277', red: '#a13737',
+                orange: '#9a4e20', text: '#303b38', dim: '#65716a', faint: '#a7b0a7' };
   const SHORT = { bl: 'blue', cy: 'cyan', gr: 'green', am: 'amber', pu: 'purple', rd: 'red', or: 'orange' };
   const hex = c => HEX[SHORT[c] || c] || HEX.faint;
   const sid = s => String(s).replace(/[^A-Za-z0-9_]/g, '_');
@@ -196,8 +196,8 @@ function mermaid(out, fenced) {
     styles.push(`  linkStyle ${k++} stroke:${hex(e.color || f.color || 'dim')},stroke-width:1.5px`);
   }
   L.push(...styles);
-  for (const l of S.layers || []) L.push(`  classDef ${sid(l.id)} fill:#0e141b,stroke:${hex(l.color)},color:#c9d1d9`);
-  L.push('  classDef none fill:#0e141b,stroke:#3a4450,color:#c9d1d9');
+  for (const l of S.layers || []) L.push(`  classDef ${sid(l.id)} fill:#ffffff,stroke:${hex(l.color)},color:#303b38`);
+  L.push('  classDef none fill:#ffffff,stroke:#a7b0a7,color:#303b38');
   for (const g of S.groups || []) if (g.id) L.push(`  style ${sid(g.id)} fill:transparent,stroke:${hex(g.color)},stroke-dasharray:${g.solid ? '0' : '5 4'},color:${hex(g.color)}`);
 
   let body = L.join('\n') + '\n';

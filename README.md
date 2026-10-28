@@ -2,7 +2,7 @@
 
 基于 [bassnova42/arch-diagram-skill](https://github.com/bassnova42/arch-diagram-skill) 的 MIT fork，面向月政的中文技术演示场景。保留上游作者署名及许可证。
 
-默认采用深蓝点阵画布、圆角模块、克制的语义配色与中文字体回退。新增暂停/继续动画、原始尺寸/适应窗口按钮，支持键盘操作与减少动态效果偏好；控制栏不会进入导出画面。
+默认采用暖白点阵画布、圆角模块、克制的语义配色与中文字体回退。新增暂停/继续动画、原始尺寸/适应窗口按钮，支持键盘操作与减少动态效果偏好；控制栏不会进入导出画面。
 
 ![Atelier 预览](docs/atelier.png)
 
@@ -35,7 +35,7 @@ node bin/cli.mjs export docs/atelier.html docs/atelier.png docs/atelier.mmd
 
 Node ≥18；检查/截图需要 Chrome、Chromium 或 Edge；MP4/GIF 还需要 ffmpeg。HTML 完全自包含。其他命令和上游功能如下。
 
-验证：`node tests/controls.mjs` 检查真实浏览器中的暂停/继续、窄屏尺寸切换、窗口变化与减少动态效果。所有内置示例均通过布局检查；视频循环接缝 PSNR 为 73.25 dB。
+验证：`node tests/controls.mjs` 检查真实浏览器中的暂停/继续、窄屏尺寸切换、窗口变化与减少动态效果。所有内置示例均通过布局检查；视频循环接缝 PSNR 为 77.37 dB。
 
 ---
 
@@ -47,7 +47,7 @@ Node ≥18；检查/截图需要 Chrome、Chromium 或 Edge；MP4/GIF 还需要 
 
 适用于 **Claude Code** 和 **Codex**。
 
-给它一个 GitHub 仓库、一篇技术文章、一份 PDF 或本地项目，Claude Code 或 Codex 会读懂结构，画出一张深色"终端蓝图"风格的架构图。连线上有流动的光点，底部的 log 会在模块之间交换数据时实时加一行。
+给它一个 GitHub 仓库、一篇技术文章、一份 PDF 或本地项目，Claude Code 或 Codex 会读懂结构，画出一张浅色「暖纸与墨绿」风格的架构图。连线上有流动的光点，底部的 log 会在模块之间交换数据时实时加一行。
 
 **下面是开源项目 [morluto/rea](https://github.com/morluto/rea) 的架构图，由这个 Skill 读取它的 GitHub 仓库自动生成：**
 
