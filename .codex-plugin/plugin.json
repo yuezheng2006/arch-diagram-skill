@@ -20,7 +20,7 @@
   "interface": {
     "displayName": "Arch Diagram Atelier",
     "shortDescription": "Animated architecture diagrams from any repo or article",
-    "longDescription": "Reads a GitHub repo, article, PDF or local project and draws a dark Atelier architecture diagram with typed animated wires and a live trace log. Exports HTML, PNG, looping MP4/GIF and Mermaid. The diagram is written in the language of your prompt.",
+    "longDescription": "Reads a GitHub repo, article, PDF or local project and draws a warm ivory Atelier architecture diagram with typed animated wires and a live trace log. Exports HTML, PNG, looping MP4/GIF and Mermaid. The diagram is written in the language of your prompt.",
     "developerName": "bassnova42",
     "category": "Developer Tools",
     "capabilities": [

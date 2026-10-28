@@ -1,6 +1,6 @@
 ---
 name: arch-diagram
-description: Turn any source — a GitHub repo, a technical article or blog URL, a PDF, a local project folder, or pasted notes — into a polished dark architecture studio architecture diagram with a structure fitted to the content, colors by element kind and typed animated wires. Outputs an interactive HTML page plus, on request, a PNG image, an MP4 video of any length, an animated GIF, or an editable Mermaid flowchart. Use when the user says 架构图 / 画架构 / 系统架构 / 流程图 / 画一下这个仓库 / 这篇文章画成图 / 输出成图片 / 输出成视频 / 动图 / mermaid / architecture diagram / system diagram / draw how X works, gives a repo or article and wants it visualized, asks to turn an existing diagram into an image, video, GIF or Mermaid, or runs /arch-diagram.
+description: Turn any source — a GitHub repo, a technical article or blog URL, a PDF, a local project folder, or pasted notes — into a polished light architecture studio architecture diagram with a structure fitted to the content, colors by element kind and typed animated wires. Outputs an interactive HTML page plus, on request, a PNG image, an MP4 video of any length, an animated GIF, or an editable Mermaid flowchart. Use when the user says 架构图 / 画架构 / 系统架构 / 流程图 / 画一下这个仓库 / 这篇文章画成图 / 输出成图片 / 输出成视频 / 动图 / mermaid / architecture diagram / system diagram / draw how X works, gives a repo or article and wants it visualized, asks to turn an existing diagram into an image, video, GIF or Mermaid, or runs /arch-diagram.
 ---
 
 # arch-diagram
@@ -20,7 +20,7 @@ Requirements: Node ≥ 18 and Chrome, Chromium or Edge (set `CHROME=/path` when 
 
 ## Custom edition: Atelier
 
-Default to the bundled Atelier design: deep navy dotted canvas, softly rounded modules, restrained semantic accents, system fonts with Chinese support, and a compact motion/size toolbar. Keep the engine's measured typography and spacing; do not add decorative nodes or invent operational status for visual effect. The toolbar is excluded from screenshots and video. Respect reduced motion; the page remains useful without animation.
+Default to the bundled Atelier design: warm ivory dotted canvas, softly rounded modules, restrained semantic accents, system fonts with Chinese support, and a compact motion/size toolbar. Keep the engine's measured typography and spacing; do not add decorative nodes or invent operational status for visual effect. The toolbar is excluded from screenshots and video. Respect reduced motion; the page remains useful without animation.
 
 For a product presentation, prefer a concise title, a one-line explanation, 3–5 semantic colors and generous routing gaps. Dense repository maps can keep compact tables. Always inspect the actual screenshot at full size and verify the narrow-window experience using “Actual size” if text becomes too small.
 
