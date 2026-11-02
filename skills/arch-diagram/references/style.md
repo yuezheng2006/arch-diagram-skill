@@ -17,3 +17,12 @@ The optional `presentation` mode adapts the layout/style separation, numbered pr
 Use one prominent headline, two clearly labeled phases for this six-step demo, short left-aligned explanations, and section frames to establish containment. Keep the animated trace subordinate to the main story. Compact repository maps retain the existing default metrics.
 
 Design reference: [baoyu-skills / baoyu-infographic](https://github.com/JimLiu/baoyu-skills/tree/main/skills/baoyu-infographic).
+
+## Four theme presets
+
+- Paper: cream canvas, warm white cards, forest teal and terracotta markers.
+- Porcelain: cool white canvas, slate blue accents and compact 8px corners.
+- Blueprint: navy canvas, light semantic lines and precise 3px corners.
+- Graphite: charcoal canvas, muted warm accents and soft 14px corners.
+
+All themes keep semantic color roles and geometry. `assets/themes.json` is the shared token source for browser and export. Set `theme` in the spec or use `--theme` at build/export.

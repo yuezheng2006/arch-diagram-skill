@@ -1,0 +1,407 @@
+{
+  "lang": "zh-CN",
+  "width": 1180,
+  "presentation": true,
+  "theme": "paper",
+  "title": "一个入口，多个任务，同时推进。",
+  "subtitle": "DSH SUPER-AGENT / Router 维护连续交互，Worker 独立执行；下方单列文章方案。",
+  "layers": [
+    {
+      "id": "event",
+      "label": "事件与交互",
+      "color": "blue"
+    },
+    {
+      "id": "control",
+      "label": "准入与调度",
+      "color": "cyan"
+    },
+    {
+      "id": "work",
+      "label": "任务执行",
+      "color": "purple"
+    },
+    {
+      "id": "state",
+      "label": "持久状态",
+      "color": "amber"
+    }
+  ],
+  "flows": [
+    {
+      "id": "new",
+      "label": "新任务 / 交付",
+      "color": "cyan"
+    },
+    {
+      "id": "fast",
+      "label": "订阅直通",
+      "color": "blue",
+      "dash": true
+    },
+    {
+      "id": "state",
+      "label": "状态写入",
+      "color": "amber"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "sources",
+      "x": 40,
+      "y": 225,
+      "w": 300,
+      "h": 144,
+      "title": "Source · 事件入口",
+      "short": "Source",
+      "sub": "GitHub / 可选 Feishu",
+      "lines": [
+        "消息、评审和 CI 进入 Trigger",
+        "事件按 Thread 组织与去重"
+      ],
+      "layer": "event",
+      "step": "01"
+    },
+    {
+      "id": "admission",
+      "x": 440,
+      "y": 225,
+      "w": 300,
+      "h": 144,
+      "title": "Gate / Eval",
+      "short": "Gate / Eval",
+      "sub": "确定性准入 + 语义评估",
+      "lines": [
+        "先按来源与 Policy 筛选",
+        "再将候选交给主会话判断"
+      ],
+      "layer": "control",
+      "step": "02"
+    },
+    {
+      "id": "router",
+      "x": 840,
+      "y": 225,
+      "w": 300,
+      "h": 144,
+      "title": "Router · 主会话",
+      "short": "Router",
+      "sub": "接单、路由与跨任务协调",
+      "lines": [
+        "批量处理候选 / 决定接单",
+        "已有任务后续事件可直通"
+      ],
+      "layer": "control",
+      "step": "03"
+    },
+    {
+      "id": "tickets",
+      "x": 40,
+      "y": 485,
+      "w": 300,
+      "h": 144,
+      "title": "Ticket · 工作单元",
+      "short": "Ticket",
+      "sub": "Mandate 授权 / Assignment 执行",
+      "lines": [
+        "接受后原子创建工单与授权",
+        "每项工作有自己的执行实例"
+      ],
+      "layer": "control",
+      "step": "04"
+    },
+    {
+      "id": "worker-a",
+      "x": 440,
+      "y": 485,
+      "w": 300,
+      "h": 144,
+      "title": "Worker · 任务 A",
+      "short": "Worker",
+      "sub": "独立 Session 与工作目录",
+      "lines": [
+        "处理自身任务与后续输入",
+        "报告 ready / blocked 等状态"
+      ],
+      "layer": "work",
+      "step": "A"
+    },
+    {
+      "id": "worker-b",
+      "x": 840,
+      "y": 485,
+      "w": 300,
+      "h": 144,
+      "title": "Worker · 任务 B",
+      "short": "Worker",
+      "sub": "另一个独立 Session 与目录",
+      "lines": [
+        "并发执行；不混入任务 A 上下文",
+        "A / B 为说明并发而设的示意"
+      ],
+      "layer": "work",
+      "step": "B"
+    },
+    {
+      "id": "store",
+      "x": 40,
+      "y": 745,
+      "w": 300,
+      "h": 144,
+      "title": "Store / Effects",
+      "short": "Store / Effects",
+      "sub": "SQLite 状态 + 持久待办动作",
+      "lines": [
+        "先提交状态，再执行外部动作",
+        "重启时恢复中断的执行实例"
+      ],
+      "layer": "state",
+      "step": "05"
+    },
+    {
+      "id": "outbox",
+      "x": 440,
+      "y": 745,
+      "w": 300,
+      "h": 144,
+      "title": "Report / Outbox",
+      "short": "Report / Outbox",
+      "sub": "报告与回复按规则交付",
+      "lines": [
+        "问题即时转达，进度留在工单",
+        "回复持久排队，并记录发送回执"
+      ],
+      "layer": "control",
+      "step": "06"
+    },
+    {
+      "id": "person",
+      "x": 840,
+      "y": 745,
+      "w": 300,
+      "h": 144,
+      "title": "人类 · 原对话",
+      "short": "人类",
+      "sub": "结果在原线程，异常在面板",
+      "lines": [
+        "审阅 PR / 回答具体问题",
+        "ready 不等同于 PR 已合并"
+      ],
+      "layer": "event",
+      "step": "07"
+    },
+    {
+      "id": "watchdog",
+      "x": 40,
+      "y": 1030,
+      "w": 520,
+      "h": 144,
+      "title": "Watchdog · 文章方案",
+      "short": "Watchdog",
+      "sub": "语义监督 / 文章 §6",
+      "lines": [
+        "观察进展、识别循环与异常",
+        "设计层展示，不宣称原型已实现"
+      ],
+      "layer": "state",
+      "step": "D1",
+      "dashed": true
+    },
+    {
+      "id": "cloud",
+      "x": 620,
+      "y": 1030,
+      "w": 520,
+      "h": 144,
+      "title": "计算、状态与环境分离",
+      "short": "计算、状态与环境分离",
+      "sub": "云端 Agent Loop / 端侧 daemon",
+      "lines": [
+        "状态与会话不绑定单台设备",
+        "文章 §5 的方案，不等同公开原型"
+      ],
+      "layer": "state",
+      "step": "D2",
+      "dashed": true
+    }
+  ],
+  "edges": [
+    {
+      "from": "sources.r",
+      "to": "admission.l",
+      "label": "Trigger",
+      "flow": "new"
+    },
+    {
+      "from": "admission.r",
+      "to": "router.l",
+      "label": "候选事件",
+      "flow": "new"
+    },
+    {
+      "from": "router.b",
+      "to": "tickets.t",
+      "label": "接单与授权",
+      "flow": "new",
+      "via": [
+        [
+          990,
+          415
+        ],
+        [
+          190,
+          415
+        ]
+      ],
+      "labelPos": [
+        770,
+        405
+      ]
+    },
+    {
+      "from": "tickets.r",
+      "to": "worker-a.l",
+      "label": "任务 A",
+      "flow": "new"
+    },
+    {
+      "from": "tickets.b",
+      "to": "worker-b.b",
+      "label": "任务 B",
+      "flow": "new",
+      "via": [
+        [
+          190,
+          685
+        ],
+        [
+          990,
+          685
+        ]
+      ],
+      "labelPos": [
+        790,
+        675
+      ]
+    },
+    {
+      "from": "admission.b",
+      "to": "worker-a.t",
+      "label": "已订阅直通",
+      "flow": "fast",
+      "labelPos": [
+        655,
+        440
+      ]
+    },
+    {
+      "from": "worker-a.b",
+      "to": "outbox.t",
+      "label": "报告",
+      "flow": "new",
+      "labelPos": [
+        622,
+        710
+      ]
+    },
+    {
+      "from": "worker-b.r",
+      "to": "outbox.b",
+      "label": "报告",
+      "flow": "new",
+      "via": [
+        [
+          1160,
+          557
+        ],
+        [
+          1160,
+          940
+        ],
+        [
+          590,
+          940
+        ]
+      ],
+      "labelPos": [
+        1020,
+        930
+      ]
+    },
+    {
+      "from": "tickets.b",
+      "to": "store.t",
+      "label": "持久写入",
+      "flow": "state",
+      "labelPos": [
+        235,
+        715
+      ]
+    },
+    {
+      "from": "outbox.r",
+      "to": "person.l",
+      "label": "结果 / 问题",
+      "flow": "new"
+    }
+  ],
+  "groups": [
+    {
+      "label": "01 / 事件接入、判断与路由",
+      "x": 24,
+      "y": 195,
+      "w": 1132,
+      "h": 200,
+      "color": "faint"
+    },
+    {
+      "label": "02 / 工单授权与并发 Worker",
+      "x": 24,
+      "y": 455,
+      "w": 1132,
+      "h": 200,
+      "color": "faint",
+      "labelRight": true
+    },
+    {
+      "label": "03 / 持久状态与交付",
+      "x": 24,
+      "y": 715,
+      "w": 1132,
+      "h": 200,
+      "color": "faint",
+      "labelRight": true
+    },
+    {
+      "label": "DESIGN / 文章讨论的架构方向，与公开原型分层阅读",
+      "x": 24,
+      "y": 1000,
+      "w": 1132,
+      "h": 200,
+      "color": "faint"
+    }
+  ],
+  "notes": [
+    {
+      "x": 40,
+      "y": 1220,
+      "w": 1100,
+      "text": "核对：官方原型 6337fc8（README / docs 001、003、007）× DeepSeek 产品部原文转载。",
+      "dim": true
+    },
+    {
+      "x": 40,
+      "y": 1244,
+      "w": 1100,
+      "text": "上部为原型机制的简化图；下部虚框为文章方案。动态图为机制演示，不是实际运行记录。",
+      "dim": true
+    }
+  ],
+  "log": {
+    "y": 1295,
+    "title": "模拟 trace · 只演示上部原型流程",
+    "live": {
+      "rows": 3
+    }
+  }
+}

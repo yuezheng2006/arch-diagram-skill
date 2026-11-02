@@ -3,6 +3,18 @@
 (function () {
   const S = JSON.parse(document.getElementById('spec').textContent);
   if (S.presentation === true) document.documentElement.classList.add('presentation');
+  const THEMES = JSON.parse(document.getElementById('themes').textContent);
+  const params = new URLSearchParams(location.search);
+  const safeTheme = name => Object.prototype.hasOwnProperty.call(THEMES, name) ? name : 'paper';
+  let activeTheme = safeTheme(params.get('theme') || S.theme || 'paper');
+  function applyTheme(name) {
+    activeTheme = safeTheme(name);
+    const root = document.documentElement;
+    root.dataset.theme = activeTheme;
+    for (const [key, value] of Object.entries(THEMES[activeTheme].tokens)) root.style.setProperty('--' + key, value);
+    root.style.colorScheme = THEMES[activeTheme].tokens['color-scheme'];
+  }
+  applyTheme(activeTheme);
   const CHECK = /[?&]check\b/.test(location.search);
   if (CHECK) document.documentElement.classList.add('check');
   const STILL = CHECK || matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -22,7 +34,7 @@
     badColors.add(String(c));
     return 'faint';
   };
-  const cssv = n => getComputedStyle(document.documentElement).getPropertyValue('--' + n).trim();
+  const cssv = n => `var(--${n})`; // SVG retains semantic tokens so theme switches recolor wires and packets too.
   // UI words follow spec.lang (zh, en, ja, ko, es, th; anything else falls back to English)
   const UI = {
     zh: { elements: '元素：', flows: '流向：', status: '状态：', wires: '连线：── 同步 ╌╌ 异步', live: 'live trace · 模块之间的数据交换',
@@ -544,6 +556,20 @@
     bar.setAttribute('aria-label', zh ? '架构图控制' : 'Diagram controls');
     document.body.insertBefore(bar, fit);
     el('span', 'brand', 'ARCH / ATELIER', bar);
+    const themeLabel = el('label', 'theme-control', zh ? '主题 ' : 'Theme ', bar);
+    const themeSelect = el('select', null, null, themeLabel);
+    themeSelect.setAttribute('aria-label', zh ? '选择界面主题' : 'Choose diagram theme');
+    for (const [id, theme] of Object.entries(THEMES)) {
+      const option = document.createElement('option');
+      option.value = id; option.textContent = theme.label[zh ? 'zh' : 'en'];
+      themeSelect.appendChild(option);
+    }
+    themeSelect.value = activeTheme;
+    themeSelect.addEventListener('change', () => {
+      const url = new URL(location.href); url.searchParams.set('theme', themeSelect.value);
+      applyTheme(themeSelect.value);
+      try { history.replaceState(null, '', url.href); } catch { /* Sandboxed previews can still switch themes. */ }
+    });
     const pause = el('button', null, zh ? '暂停动画' : 'Pause motion', bar);
     pause.type = 'button'; pause.disabled = STILL;
     pause.setAttribute('aria-pressed', 'false');

@@ -166,10 +166,15 @@ body { background: var(--page); min-height: 100vh; }
 .presentation .lg { margin: 0 20px 0 0; }
 .presentation .group { background: #ffffff20; border-style: solid; border-color: var(--border); border-radius: 16px; }
 .presentation .group .glg { font: 600 12px/20px -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; letter-spacing: 1px; color: var(--dim); }
-.presentation .box { padding: 18px 20px; border-radius: 12px; border-top: 3px solid var(--c); }
+.presentation .box { padding: 18px 20px; border-radius: var(--radius, 12px); border-top: 3px solid var(--c); }
 .presentation .box .ttl { text-align: left; padding-left: 42px; font-size: 17px; line-height: 28px; }
 .presentation .box .sub { text-align: left; margin-top: 12px; font-size: 13px; }
 .presentation .box .c { text-align: left; }
 .presentation .step { position: absolute; left: 18px; top: 17px; font: 650 22px/28px -apple-system, BlinkMacSystemFont, sans-serif; color: var(--step-ink); }
 .presentation #log { border-color: var(--border); }
 .presentation #log .legend { color: var(--dim); }
+
+.theme-control { display: inline-flex; align-items: center; gap: 6px; color: var(--dim); }
+.theme-control select { font: inherit; min-height: 36px; max-width: 150px; background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 7px; padding: 6px 10px; }
+.theme-control select:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.box { border-radius: var(--radius, 10px); }

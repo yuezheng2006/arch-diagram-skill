@@ -110,3 +110,7 @@ Wire meaning comes from the declared `flows`: each kind of relationship gets one
 ## Atelier presentation extension
 
 `presentation: true` enables the cream-paper presentation layout: a large left-aligned title, muted terracotta step numbers, left-aligned cards and section frames. Start content at y ≥ 210 to clear the larger header. Give cards ≥ 144px height and ≥ 280px width. Set optional node `step` to a short string such as `"01"`; it is escaped as plain text. Omit the mode for compact upstream maps.
+
+## Theme
+
+Top-level `theme`: `paper` (default), `porcelain`, `blueprint`, `graphite`. The build command's `--theme NAME` overrides the spec. The export command accepts the same option for PNG/MP4/GIF/Mermaid. Unknown build/export themes fail before writing output; an unknown browser query theme falls back to paper. UI labels are Chinese for zh and English otherwise. Tokens are maintained in `assets/themes.json`, inlined at build time, and carried in the standalone HTML.

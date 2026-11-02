@@ -173,7 +173,7 @@ body { background: var(--page); min-height: 100vh; }
 .presentation .lg { margin: 0 20px 0 0; }
 .presentation .group { background: #ffffff20; border-style: solid; border-color: var(--border); border-radius: 16px; }
 .presentation .group .glg { font: 600 12px/20px -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; letter-spacing: 1px; color: var(--dim); }
-.presentation .box { padding: 18px 20px; border-radius: 12px; border-top: 3px solid var(--c); }
+.presentation .box { padding: 18px 20px; border-radius: var(--radius, 12px); border-top: 3px solid var(--c); }
 .presentation .box .ttl { text-align: left; padding-left: 42px; font-size: 17px; line-height: 28px; }
 .presentation .box .sub { text-align: left; margin-top: 12px; font-size: 13px; }
 .presentation .box .c { text-align: left; }
@@ -181,9 +181,17 @@ body { background: var(--page); min-height: 100vh; }
 .presentation #log { border-color: var(--border); }
 .presentation #log .legend { color: var(--dim); }
 
+.theme-control { display: inline-flex; align-items: center; gap: 6px; color: var(--dim); }
+.theme-control select { font: inherit; min-height: 36px; max-width: 150px; background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 7px; padding: 6px 10px; }
+.theme-control select:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.box { border-radius: var(--radius, 10px); }
+
 </style>
 </head>
 <body>
+<script id="themes" type="application/json">
+{"paper":{"label":{"zh":"暖纸","en":"Paper"},"tokens":{"bg":"#f5f0e6","page":"#eae4d8","panel":"#fffdf8","text":"#303b38","head":"#192923","dim":"#5f6961","faint":"#a7b0a7","cyan":"#21695f","blue":"#365d78","green":"#35663c","purple":"#6c5277","amber":"#885f25","orange":"#9a4e20","red":"#a13737","border":"#d8cebc","grid":"#ded5c4","surface-subtle":"#ebece1","surface-hover":"#e5ebe1","shadow":"#233b2c0a","trace-flash":"#dde9df","step-ink":"#97502e","radius":"12px","color-scheme":"light"}},"porcelain":{"label":{"zh":"冷瓷","en":"Porcelain"},"tokens":{"bg":"#f5f8fc","page":"#e9eef5","panel":"#ffffff","text":"#314258","head":"#172d46","dim":"#5a6c82","faint":"#9aaabe","cyan":"#186c73","blue":"#305fab","green":"#326c50","purple":"#755394","amber":"#815c22","orange":"#9d502c","red":"#ac3849","border":"#d1dce9","grid":"#dde5f0","surface-subtle":"#eaf0f7","surface-hover":"#e0eaf6","shadow":"#22476b0a","trace-flash":"#d6e7f4","step-ink":"#305fab","radius":"8px","color-scheme":"light"}},"blueprint":{"label":{"zh":"蓝图","en":"Blueprint"},"tokens":{"bg":"#0d2137","page":"#081727","panel":"#142e48","text":"#d1e0ef","head":"#eef6ff","dim":"#a3b7cf","faint":"#637c97","cyan":"#70d1db","blue":"#93baff","green":"#8ad5ad","purple":"#c6a8ef","amber":"#e8c47b","orange":"#f3ad7f","red":"#ff9c9c","border":"#35536e","grid":"#1a3650","surface-subtle":"#10283f","surface-hover":"#203d58","shadow":"#00000025","trace-flash":"#294b53","step-ink":"#e8c47b","radius":"3px","color-scheme":"dark"}},"graphite":{"label":{"zh":"石墨","en":"Graphite"},"tokens":{"bg":"#1b1c1f","page":"#121315","panel":"#27292d","text":"#d6d3cd","head":"#f2efea","dim":"#b0aea8","faint":"#747775","cyan":"#83c9bb","blue":"#9ab9d6","green":"#a5c18d","purple":"#c3add2","amber":"#d9bc81","orange":"#e0a587","red":"#eca0a0","border":"#484a4d","grid":"#2c2e31","surface-subtle":"#222427","surface-hover":"#35383b","shadow":"#00000020","trace-flash":"#35433b","step-ink":"#e0a587","radius":"14px","color-scheme":"dark"}}}
+</script>
 <script id="spec" type="application/json">
 {
  "lang": "zh-CN",
@@ -383,6 +391,18 @@ body { background: var(--page); min-height: 100vh; }
 (function () {
   const S = JSON.parse(document.getElementById('spec').textContent);
   if (S.presentation === true) document.documentElement.classList.add('presentation');
+  const THEMES = JSON.parse(document.getElementById('themes').textContent);
+  const params = new URLSearchParams(location.search);
+  const safeTheme = name => Object.prototype.hasOwnProperty.call(THEMES, name) ? name : 'paper';
+  let activeTheme = safeTheme(params.get('theme') || S.theme || 'paper');
+  function applyTheme(name) {
+    activeTheme = safeTheme(name);
+    const root = document.documentElement;
+    root.dataset.theme = activeTheme;
+    for (const [key, value] of Object.entries(THEMES[activeTheme].tokens)) root.style.setProperty('--' + key, value);
+    root.style.colorScheme = THEMES[activeTheme].tokens['color-scheme'];
+  }
+  applyTheme(activeTheme);
   const CHECK = /[?&]check\b/.test(location.search);
   if (CHECK) document.documentElement.classList.add('check');
   const STILL = CHECK || matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -402,7 +422,7 @@ body { background: var(--page); min-height: 100vh; }
     badColors.add(String(c));
     return 'faint';
   };
-  const cssv = n => getComputedStyle(document.documentElement).getPropertyValue('--' + n).trim();
+  const cssv = n => `var(--${n})`; // SVG retains semantic tokens so theme switches recolor wires and packets too.
   // UI words follow spec.lang (zh, en, ja, ko, es, th; anything else falls back to English)
   const UI = {
     zh: { elements: '元素：', flows: '流向：', status: '状态：', wires: '连线：── 同步 ╌╌ 异步', live: 'live trace · 模块之间的数据交换',
@@ -924,6 +944,20 @@ body { background: var(--page); min-height: 100vh; }
     bar.setAttribute('aria-label', zh ? '架构图控制' : 'Diagram controls');
     document.body.insertBefore(bar, fit);
     el('span', 'brand', 'ARCH / ATELIER', bar);
+    const themeLabel = el('label', 'theme-control', zh ? '主题 ' : 'Theme ', bar);
+    const themeSelect = el('select', null, null, themeLabel);
+    themeSelect.setAttribute('aria-label', zh ? '选择界面主题' : 'Choose diagram theme');
+    for (const [id, theme] of Object.entries(THEMES)) {
+      const option = document.createElement('option');
+      option.value = id; option.textContent = theme.label[zh ? 'zh' : 'en'];
+      themeSelect.appendChild(option);
+    }
+    themeSelect.value = activeTheme;
+    themeSelect.addEventListener('change', () => {
+      const url = new URL(location.href); url.searchParams.set('theme', themeSelect.value);
+      applyTheme(themeSelect.value);
+      try { history.replaceState(null, '', url.href); } catch { /* Sandboxed previews can still switch themes. */ }
+    });
     const pause = el('button', null, zh ? '暂停动画' : 'Pause motion', bar);
     pause.type = 'button'; pause.disabled = STILL;
     pause.setAttribute('aria-pressed', 'false');

@@ -1,0 +1,46 @@
+flowchart LR
+  %% 一个入口，多个任务，同时推进。
+  subgraph g2["01 / 事件接入、判断与路由"]
+    sources["<b>Source · 事件入口</b><br/>GitHub / 可选 Feishu<br/>消息、评审和 CI 进入 Trigger<br/>事件按 Thread 组织与去重"]:::event
+    admission["<b>Gate / Eval</b><br/>确定性准入 + 语义评估<br/>先按来源与 Policy 筛选<br/>再将候选交给主会话判断"]:::control
+    router["<b>Router · 主会话</b><br/>接单、路由与跨任务协调<br/>批量处理候选 / 决定接单<br/>已有任务后续事件可直通"]:::control
+  end
+  subgraph g7["02 / 工单授权与并发 Worker"]
+    tickets["<b>Ticket · 工作单元</b><br/>Mandate 授权 / Assignment 执行<br/>接受后原子创建工单与授权<br/>每项工作有自己的执行实例"]:::control
+    worker_a["<b>Worker · 任务 A</b><br/>独立 Session 与工作目录<br/>处理自身任务与后续输入<br/>报告 ready / blocked 等状态"]:::work
+    worker_b["<b>Worker · 任务 B</b><br/>另一个独立 Session 与目录<br/>并发执行；不混入任务 A 上下文<br/>A / B 为说明并发而设的示意"]:::work
+  end
+  subgraph g12["03 / 持久状态与交付"]
+    store["<b>Store / Effects</b><br/>SQLite 状态 + 持久待办动作<br/>先提交状态，再执行外部动作<br/>重启时恢复中断的执行实例"]:::state
+    outbox["<b>Report / Outbox</b><br/>报告与回复按规则交付<br/>问题即时转达，进度留在工单<br/>回复持久排队，并记录发送回执"]:::control
+    person["<b>人类 · 原对话</b><br/>结果在原线程，异常在面板<br/>审阅 PR / 回答具体问题<br/>ready 不等同于 PR 已合并"]:::event
+  end
+  subgraph g17["DESIGN / 文章讨论的架构方向，与公开原型分层阅读"]
+    watchdog["<b>Watchdog · 文章方案</b><br/>语义监督 / 文章 §6<br/>观察进展、识别循环与异常<br/>设计层展示，不宣称原型已实现"]:::state
+    cloud["<b>计算、状态与环境分离</b><br/>云端 Agent Loop / 端侧 daemon<br/>状态与会话不绑定单台设备<br/>文章 §5 的方案，不等同公开原型"]:::state
+  end
+  sources -->|"Trigger"| admission
+  admission -->|"候选事件"| router
+  router -->|"接单与授权"| tickets
+  tickets -->|"任务 A"| worker_a
+  tickets -->|"任务 B"| worker_b
+  admission -.->|"已订阅直通"| worker_a
+  worker_a -->|"报告"| outbox
+  worker_b -->|"报告"| outbox
+  tickets -->|"持久写入"| store
+  outbox -->|"结果 / 问题"| person
+  linkStyle 0 stroke:#70d1db,stroke-width:1.5px
+  linkStyle 1 stroke:#70d1db,stroke-width:1.5px
+  linkStyle 2 stroke:#70d1db,stroke-width:1.5px
+  linkStyle 3 stroke:#70d1db,stroke-width:1.5px
+  linkStyle 4 stroke:#70d1db,stroke-width:1.5px
+  linkStyle 5 stroke:#93baff,stroke-width:1.5px
+  linkStyle 6 stroke:#70d1db,stroke-width:1.5px
+  linkStyle 7 stroke:#70d1db,stroke-width:1.5px
+  linkStyle 8 stroke:#e8c47b,stroke-width:1.5px
+  linkStyle 9 stroke:#70d1db,stroke-width:1.5px
+  classDef event fill:#142e48,stroke:#93baff,color:#d1e0ef
+  classDef control fill:#142e48,stroke:#70d1db,color:#d1e0ef
+  classDef work fill:#142e48,stroke:#c6a8ef,color:#d1e0ef
+  classDef state fill:#142e48,stroke:#e8c47b,color:#d1e0ef
+  classDef none fill:#142e48,stroke:#637c97,color:#d1e0ef

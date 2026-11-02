@@ -8,6 +8,30 @@
 
 下载 `docs/atelier.html` 后可离线打开交互示例；`skills/arch-diagram/examples/atelier.json` 是可编辑源文件。示例是本技能自身的处理流程示意，动态 trace 表示模拟数据交换，不是真实运行监控。
 
+## 四套预制主题
+
+| 主题 | 参数 | 适用场景 |
+| --- | --- | --- |
+| 暖纸 | `paper` | 文章解读、暖色演示 |
+| 冷瓷 | `porcelain` | 产品文档、技术分享 |
+| 蓝图 | `blueprint` | 深色工程架构 |
+| 石墨 | `graphite` | 中性深色演示 |
+
+HTML 顶部可即时切换主题，选择保存在网址中；切换不会暂停动画。导出使用内嵌默认主题，或显式指定同名参数：
+
+```bash
+node bin/cli.mjs build skills/arch-diagram/examples/dsh-superagent.json docs/dsh-superagent.html --theme paper
+node bin/cli.mjs export docs/dsh-superagent.html dsh.png dsh.mp4 dsh.mmd --theme blueprint --seconds 12
+```
+
+## 实战：DSH Super-agent
+
+[下载交互 HTML](docs/dsh-superagent.html) · [蓝图预览](docs/dsh-blueprint.png) · [12 秒动态图视频](docs/dsh-superagent.mp4) · [信源与阅读说明](docs/dsh-superagent.sources.md)
+
+示例以 DeepSeek 产品部文章的署名转载与官方原型文档交叉核对。上部画事件准入、Router、订阅直通、并发 Worker、持久状态与交付；下部虚框单列 Watchdog 和存算/环境分离的文章方案。A/B 任务和 trace 为教学示意。
+
+测试：`npm test`、`node tests/controls.mjs`、`node tests/themes.mjs`。主题测试覆盖窄屏、SVG 同步变色、次要文字对比度和 Mermaid 配色，错误主题会在构建/导出前被拒绝。
+
 ## 安装定制版
 
 ```bash

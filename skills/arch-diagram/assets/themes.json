@@ -1,0 +1,126 @@
+{
+  "paper": {
+    "label": {
+      "zh": "暖纸",
+      "en": "Paper"
+    },
+    "tokens": {
+      "bg": "#f5f0e6",
+      "page": "#eae4d8",
+      "panel": "#fffdf8",
+      "text": "#303b38",
+      "head": "#192923",
+      "dim": "#5f6961",
+      "faint": "#a7b0a7",
+      "cyan": "#21695f",
+      "blue": "#365d78",
+      "green": "#35663c",
+      "purple": "#6c5277",
+      "amber": "#885f25",
+      "orange": "#9a4e20",
+      "red": "#a13737",
+      "border": "#d8cebc",
+      "grid": "#ded5c4",
+      "surface-subtle": "#ebece1",
+      "surface-hover": "#e5ebe1",
+      "shadow": "#233b2c0a",
+      "trace-flash": "#dde9df",
+      "step-ink": "#97502e",
+      "radius": "12px",
+      "color-scheme": "light"
+    }
+  },
+  "porcelain": {
+    "label": {
+      "zh": "冷瓷",
+      "en": "Porcelain"
+    },
+    "tokens": {
+      "bg": "#f5f8fc",
+      "page": "#e9eef5",
+      "panel": "#ffffff",
+      "text": "#314258",
+      "head": "#172d46",
+      "dim": "#5a6c82",
+      "faint": "#9aaabe",
+      "cyan": "#186c73",
+      "blue": "#305fab",
+      "green": "#326c50",
+      "purple": "#755394",
+      "amber": "#815c22",
+      "orange": "#9d502c",
+      "red": "#ac3849",
+      "border": "#d1dce9",
+      "grid": "#dde5f0",
+      "surface-subtle": "#eaf0f7",
+      "surface-hover": "#e0eaf6",
+      "shadow": "#22476b0a",
+      "trace-flash": "#d6e7f4",
+      "step-ink": "#305fab",
+      "radius": "8px",
+      "color-scheme": "light"
+    }
+  },
+  "blueprint": {
+    "label": {
+      "zh": "蓝图",
+      "en": "Blueprint"
+    },
+    "tokens": {
+      "bg": "#0d2137",
+      "page": "#081727",
+      "panel": "#142e48",
+      "text": "#d1e0ef",
+      "head": "#eef6ff",
+      "dim": "#a3b7cf",
+      "faint": "#637c97",
+      "cyan": "#70d1db",
+      "blue": "#93baff",
+      "green": "#8ad5ad",
+      "purple": "#c6a8ef",
+      "amber": "#e8c47b",
+      "orange": "#f3ad7f",
+      "red": "#ff9c9c",
+      "border": "#35536e",
+      "grid": "#1a3650",
+      "surface-subtle": "#10283f",
+      "surface-hover": "#203d58",
+      "shadow": "#00000025",
+      "trace-flash": "#294b53",
+      "step-ink": "#e8c47b",
+      "radius": "3px",
+      "color-scheme": "dark"
+    }
+  },
+  "graphite": {
+    "label": {
+      "zh": "石墨",
+      "en": "Graphite"
+    },
+    "tokens": {
+      "bg": "#1b1c1f",
+      "page": "#121315",
+      "panel": "#27292d",
+      "text": "#d6d3cd",
+      "head": "#f2efea",
+      "dim": "#b0aea8",
+      "faint": "#747775",
+      "cyan": "#83c9bb",
+      "blue": "#9ab9d6",
+      "green": "#a5c18d",
+      "purple": "#c3add2",
+      "amber": "#d9bc81",
+      "orange": "#e0a587",
+      "red": "#eca0a0",
+      "border": "#484a4d",
+      "grid": "#2c2e31",
+      "surface-subtle": "#222427",
+      "surface-hover": "#35383b",
+      "shadow": "#00000020",
+      "trace-flash": "#35433b",
+      "step-ink": "#e0a587",
+      "radius": "14px",
+      "color-scheme": "dark"
+    }
+  }
+}

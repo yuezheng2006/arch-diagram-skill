@@ -53,13 +53,13 @@ switch (cmd) {
     process.exit(r.status ?? 1);
   }
   default:
-    console.log(`@rokoai/arch-diagram — animated architecture diagrams for Claude Code and Codex
+    console.log(`Atelier — animated architecture diagrams for Claude Code and Codex
 
   install    [--claude] [--codex] [--project | --dir <skills dir>]
              copy the skill into ~/.claude/skills and ~/.codex/skills (Codex when installed)
   uninstall  [same flags]                       remove it
-  build  <spec.json> <out.html>                 render a spec
+  build  <spec.json> <out.html> [--theme NAME]   render a spec
   check  <out.html> [shot.png]                  self-check layout + screenshot
-  export <out.html> <out.png|.mp4|.gif|.mmd|.md> [--seconds N] [--scale K]`);
+  export <out.html> <out.png|.mp4|.gif|.mmd|.md> [--seconds N] [--scale K] [--theme NAME]`);
     process.exit(cmd ? 1 : 0);
 }

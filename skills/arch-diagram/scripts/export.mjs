@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-// usage: node export.mjs <diagram.html> <out> [<out> …] [--seconds N] [--scale K]
+// usage: node export.mjs <diagram.html> <out> [<out> …] [--seconds N] [--scale K] [--theme NAME]
 // The output type follows each extension:
 //   .png        static image (default 2x), no moving packets
 //   .mp4        video, default 20s: records one seamless 4s animation cycle, then repeats it to --seconds
 //   .gif        animated GIF of one 4s cycle that loops forever
 //   .mmd / .md  Mermaid flowchart: editable, renders in GitHub / Notion / Typora / Feishu (.md wraps it in a fence)
 import { spawn, spawnSync, execFileSync } from 'node:child_process';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, rmSync, writeFileSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve, extname } from 'node:path';
 import { findChrome, runChrome, readDiag, readSpec, fileUrl, pageSize } from './lib.mjs';
@@ -14,11 +14,19 @@ import { findChrome, runChrome, readDiag, readSpec, fileUrl, pageSize } from './
 const argv = process.argv.slice(2);
 const opt = (k, d) => { const i = argv.indexOf(k); if (i < 0) return d; const v = argv[i + 1]; argv.splice(i, 2); return +v; };
 const SECONDS = opt('--seconds', null), SCALE = opt('--scale', 2);
+const ti = argv.indexOf('--theme');
+const themeOverride = ti >= 0 ? argv[ti + 1] : null;
+if (ti >= 0) argv.splice(ti, 2);
 const [htmlPath, ...outs] = argv;
 if (!htmlPath || !outs.length) {
-  console.error('usage: node export.mjs <diagram.html> <out.png|.mp4|.gif|.mmd|.md> … [--seconds N] [--scale K]');
+  console.error('usage: node export.mjs <diagram.html> <out.png|.mp4|.gif|.mmd|.md> … [--seconds N] [--scale K] [--theme NAME]');
   process.exit(2);
 }
+const embedded = /<script id="themes" type="application\/json">([\s\S]*?)<\/script>/.exec(readFileSync(htmlPath, 'utf8'));
+const themes = embedded ? JSON.parse(embedded[1]) : { paper: { tokens: { blue:'#365d78', cyan:'#21695f', green:'#35663c', amber:'#885f25', purple:'#6c5277', red:'#a13737', orange:'#9a4e20', text:'#303b38', dim:'#65716a', faint:'#a7b0a7', panel:'#ffffff' } } };
+const theme = themeOverride || readSpec(htmlPath).theme || 'paper';
+if ((ti >= 0 && !themeOverride) || !Object.hasOwn(themes, theme)) { console.error('unknown or missing theme: ' + themeOverride); process.exit(2); }
+const diagramUrl = query => fileUrl(htmlPath) + '?' + query + '&theme=' + encodeURIComponent(theme);
 const LOOP = 4;   // must match the .loop periods in style.css
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -38,7 +46,7 @@ for (const out of outs) {
 function png(out) {
   const { W, H } = need();
   runChrome(chrome, [`--force-device-scale-factor=${SCALE}`, '--virtual-time-budget=2500',
-    `--window-size=${W},${H}`, `--screenshot=${resolve(out)}`, fileUrl(htmlPath) + '?check']);
+    `--window-size=${W},${H}`, `--screenshot=${resolve(out)}`, diagramUrl('check')]);
   console.log(`✓ ${out}  (${W * SCALE}×${H * SCALE})`);
 }
 
@@ -109,7 +117,7 @@ async function capture(W, H, seconds) {
     await send('Page.enable');
     // without this the headless screen clamps tall pages
     await send('Emulation.setDeviceMetricsOverride', { width: W, height: H, deviceScaleFactor: SCALE, mobile: false, screenWidth: W, screenHeight: H });
-    await send('Page.navigate', { url: fileUrl(htmlPath) + `?loop=${LOOP}` });
+    await send('Page.navigate', { url: diagramUrl(`loop=${LOOP}`) });
     await sleep(2200 + LOOP * 1000);   // every packet has started (begin ≤ 1.5s), fonts have settled and a live log has run one full cycle
     await send('Page.startScreencast', { format: 'jpeg', quality: 92, everyNthFrame: 1, maxWidth: W * SCALE, maxHeight: H * SCALE });
     await sleep(300);
@@ -131,8 +139,7 @@ async function capture(W, H, seconds) {
 // ---------- Mermaid ----------
 function mermaid(out, fenced) {
   const S = readSpec(htmlPath);
-  const HEX = { blue: '#365d78', cyan: '#21695f', green: '#35663c', amber: '#885f25', purple: '#6c5277', red: '#a13737',
-                orange: '#9a4e20', text: '#303b38', dim: '#65716a', faint: '#a7b0a7' };
+  const HEX = themes[theme].tokens;
   const SHORT = { bl: 'blue', cy: 'cyan', gr: 'green', am: 'amber', pu: 'purple', rd: 'red', or: 'orange' };
   const hex = c => HEX[SHORT[c] || c] || HEX.faint;
   const sid = s => String(s).replace(/[^A-Za-z0-9_]/g, '_');
@@ -196,8 +203,8 @@ function mermaid(out, fenced) {
     styles.push(`  linkStyle ${k++} stroke:${hex(e.color || f.color || 'dim')},stroke-width:1.5px`);
   }
   L.push(...styles);
-  for (const l of S.layers || []) L.push(`  classDef ${sid(l.id)} fill:#ffffff,stroke:${hex(l.color)},color:#303b38`);
-  L.push('  classDef none fill:#ffffff,stroke:#a7b0a7,color:#303b38');
+  for (const l of S.layers || []) L.push(`  classDef ${sid(l.id)} fill:${HEX.panel},stroke:${hex(l.color)},color:${HEX.text}`);
+  L.push(`  classDef none fill:${HEX.panel},stroke:${HEX.faint},color:${HEX.text}`);
   for (const g of S.groups || []) if (g.id) L.push(`  style ${sid(g.id)} fill:transparent,stroke:${hex(g.color)},stroke-dasharray:${g.solid ? '0' : '5 4'},color:${hex(g.color)}`);
 
   let body = L.join('\n') + '\n';
