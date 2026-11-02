@@ -9,3 +9,11 @@ The engine implements this style; edit the spec for content and layout.
 - Orthogonal wires, small moving packets and compact trace rows retain the upstream renderer and export timing.
 - Toolbar provides pause/resume and actual-size/fit controls, with keyboard focus indicators and pressed states. It is outside the export canvas and hidden in check/loop modes.
 - Reduced motion disables animation; PNG output uses the deterministic check mode. Keep content coordinates compatible with upstream specs.
+
+## Presentation composition
+
+The optional `presentation` mode adapts the layout/style separation, numbered process and short labels from baoyu-infographic's `linear-progression` and `technical-schematic` references. It uses a warm paper palette and terracotta step markers, without claiming the hand-drawn Morandi style. This remains a repo-native HTML/SVG renderer, not an AI-generated raster image.
+
+Use one prominent headline, two clearly labeled phases for this six-step demo, short left-aligned explanations, and section frames to establish containment. Keep the animated trace subordinate to the main story. Compact repository maps retain the existing default metrics.
+
+Design reference: [baoyu-skills / baoyu-infographic](https://github.com/JimLiu/baoyu-skills/tree/main/skills/baoyu-infographic).

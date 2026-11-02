@@ -2,6 +2,7 @@
 // draws orthogonal wires, then self-checks the layout (?check writes results to #__diag).
 (function () {
   const S = JSON.parse(document.getElementById('spec').textContent);
+  if (S.presentation === true) document.documentElement.classList.add('presentation');
   const CHECK = /[?&]check\b/.test(location.search);
   if (CHECK) document.documentElement.classList.add('check');
   const STILL = CHECK || matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -118,6 +119,7 @@
     d.id = n.id;
     tint(d, n.color || layerColor(n.layer)); place(d, n);
     if (n.status) el('span', 'st ' + n.status, fmt(n.statusText || LABEL[n.status] || n.status), d);
+    if (n.step != null) el('span', 'step', esc(n.step), d);
     if (n.title) el('div', 'ttl', fmt(n.title), d);
     if (n.sub) el('div', 'sub', fmt(n.sub), d);
     if (n.text) el('div', 'c', fmt(n.text), d);

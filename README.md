@@ -2,7 +2,7 @@
 
 基于 [bassnova42/arch-diagram-skill](https://github.com/bassnova42/arch-diagram-skill) 的 MIT fork，面向月政的中文技术演示场景。保留上游作者署名及许可证。
 
-默认采用暖白点阵画布、圆角模块、克制的语义配色与中文字体回退。新增暂停/继续动画、原始尺寸/适应窗口按钮，支持键盘操作与减少动态效果偏好；控制栏不会进入导出画面。
+默认采用暖白点阵画布、圆角模块、克制的语义配色与中文字体回退。示例参考 baoyu-infographic 的布局与风格分离原则，增加大标题、步骤编号、流程分区和暖纸配色；通过 `presentation: true` 启用演示排版。新增暂停/继续动画、原始尺寸/适应窗口按钮，支持键盘操作与减少动态效果偏好；控制栏不会进入导出画面。
 
 ![Atelier 预览](docs/atelier.png)
 
@@ -35,7 +35,9 @@ node bin/cli.mjs export docs/atelier.html docs/atelier.png docs/atelier.mmd
 
 Node ≥18；检查/截图需要 Chrome、Chromium 或 Edge；MP4/GIF 还需要 ffmpeg。HTML 完全自包含。其他命令和上游功能如下。
 
-验证：`node tests/controls.mjs` 检查真实浏览器中的暂停/继续、窄屏尺寸切换、窗口变化与减少动态效果。所有内置示例均通过布局检查；视频循环接缝 PSNR 为 77.37 dB。
+验证：`node tests/controls.mjs` 检查真实浏览器中的暂停/继续、窄屏尺寸切换、窗口变化与减少动态效果。所有内置示例均通过布局检查。
+
+已 rebase 到 upstream `879ca7f`（1.2.3），保留颜色字段注入防护、对应回归测试及安装文档修复。运行 `npm test` 可检查上游安全回归。
 
 ---
 

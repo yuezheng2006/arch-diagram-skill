@@ -22,7 +22,7 @@ Requirements: Node ≥ 18 and Chrome, Chromium or Edge (set `CHROME=/path` when 
 
 Default to the bundled Atelier design: warm ivory dotted canvas, softly rounded modules, restrained semantic accents, system fonts with Chinese support, and a compact motion/size toolbar. Keep the engine's measured typography and spacing; do not add decorative nodes or invent operational status for visual effect. The toolbar is excluded from screenshots and video. Respect reduced motion; the page remains useful without animation.
 
-For a product presentation, prefer a concise title, a one-line explanation, 3–5 semantic colors and generous routing gaps. Dense repository maps can keep compact tables. Always inspect the actual screenshot at full size and verify the narrow-window experience using “Actual size” if text becomes too small.
+For a product presentation, use `presentation: true` with node `step` labels when appropriate (see the spec reference). Separate information structure from visual style: choose the progression or architecture first, then a restrained technical presentation. Prefer a concise title, a one-line explanation, 3–5 semantic colors and generous routing gaps. Dense repository maps can keep compact tables. Always inspect the actual screenshot at full size and verify the narrow-window experience using “Actual size” if text becomes too small.
 
 ## 1. Get the source
 

@@ -106,3 +106,7 @@ Wire meaning comes from the declared `flows`: each kind of relationship gets one
 - wire labels sitting on a box
 - rail items colliding
 - warning only: the number of wire crossings
+
+## Atelier presentation extension
+
+`presentation: true` enables the cream-paper presentation layout: a large left-aligned title, muted terracotta step numbers, left-aligned cards and section frames. Start content at y ≥ 210 to clear the larger header. Give cards ≥ 144px height and ≥ 280px width. Set optional node `step` to a short string such as `"01"`; it is escaped as plain text. Omit the mode for compact upstream maps.

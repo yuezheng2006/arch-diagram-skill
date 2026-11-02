@@ -155,3 +155,21 @@ body { background: var(--page); min-height: 100vh; }
 .check .toolbar, .loop .toolbar { display: none; }
 @media (prefers-reduced-motion: reduce) { *, *::before { animation: none !important; transition: none !important; } }
 @media print { .toolbar { display: none; } body { padding: 0; } #fit { box-shadow: none; } }
+
+/* Presentation mode: Baoyu-inspired linear progression × technical schematic.
+   Separate layout from style; keep this opt-in for compact upstream maps. */
+.presentation { --bg: #f5f0e6; --page: #eae4d8; --panel: #fffdf8; --border: #d8cebc; --grid: #ded5c4; --surface-subtle: #ebece1; --step-ink: #97502e; }
+.presentation #head { top: 24px; text-align: left; padding: 0 40px; }
+.presentation #head .t { font-size: 32px; line-height: 1.3; letter-spacing: -.8px; }
+.presentation #head > .dim { font: 14px/1.8 -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; margin-top: 8px; }
+.presentation #head .rule { margin-top: 18px; }
+.presentation .lg { margin: 0 20px 0 0; }
+.presentation .group { background: #ffffff20; border-style: solid; border-color: var(--border); border-radius: 16px; }
+.presentation .group .glg { font: 600 12px/20px -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; letter-spacing: 1px; color: var(--dim); }
+.presentation .box { padding: 18px 20px; border-radius: 12px; border-top: 3px solid var(--c); }
+.presentation .box .ttl { text-align: left; padding-left: 42px; font-size: 17px; line-height: 28px; }
+.presentation .box .sub { text-align: left; margin-top: 12px; font-size: 13px; }
+.presentation .box .c { text-align: left; }
+.presentation .step { position: absolute; left: 18px; top: 17px; font: 650 22px/28px -apple-system, BlinkMacSystemFont, sans-serif; color: var(--step-ink); }
+.presentation #log { border-color: var(--border); }
+.presentation #log .legend { color: var(--dim); }

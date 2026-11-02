@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>把复杂系统，讲清楚。</title>
+<title>从源码到架构，一眼看懂。</title>
 <style>
 :root {
   color-scheme: light;
@@ -163,15 +163,33 @@ body { background: var(--page); min-height: 100vh; }
 @media (prefers-reduced-motion: reduce) { *, *::before { animation: none !important; transition: none !important; } }
 @media print { .toolbar { display: none; } body { padding: 0; } #fit { box-shadow: none; } }
 
+/* Presentation mode: Baoyu-inspired linear progression × technical schematic.
+   Separate layout from style; keep this opt-in for compact upstream maps. */
+.presentation { --bg: #f5f0e6; --page: #eae4d8; --panel: #fffdf8; --border: #d8cebc; --grid: #ded5c4; --surface-subtle: #ebece1; --step-ink: #97502e; }
+.presentation #head { top: 24px; text-align: left; padding: 0 40px; }
+.presentation #head .t { font-size: 32px; line-height: 1.3; letter-spacing: -.8px; }
+.presentation #head > .dim { font: 14px/1.8 -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; margin-top: 8px; }
+.presentation #head .rule { margin-top: 18px; }
+.presentation .lg { margin: 0 20px 0 0; }
+.presentation .group { background: #ffffff20; border-style: solid; border-color: var(--border); border-radius: 16px; }
+.presentation .group .glg { font: 600 12px/20px -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; letter-spacing: 1px; color: var(--dim); }
+.presentation .box { padding: 18px 20px; border-radius: 12px; border-top: 3px solid var(--c); }
+.presentation .box .ttl { text-align: left; padding-left: 42px; font-size: 17px; line-height: 28px; }
+.presentation .box .sub { text-align: left; margin-top: 12px; font-size: 13px; }
+.presentation .box .c { text-align: left; }
+.presentation .step { position: absolute; left: 18px; top: 17px; font: 650 22px/28px -apple-system, BlinkMacSystemFont, sans-serif; color: var(--step-ink); }
+.presentation #log { border-color: var(--border); }
+.presentation #log .legend { color: var(--dim); }
+
 </style>
 </head>
 <body>
 <script id="spec" type="application/json">
 {
  "lang": "zh-CN",
- "width": 1080,
- "title": "把复杂系统，讲清楚。",
- "subtitle": "ARCH DIAGRAM / ATELIER   ·   从可信来源到可分享的动态架构图",
+ "width": 1180,
+ "title": "从源码到架构，一眼看懂。",
+ "subtitle": "先读懂关系，再组织结构，最后交付可复用的动态图。",
  "layers": [
   {
    "id": "input",
@@ -205,92 +223,98 @@ body { background: var(--page); min-height: 100vh; }
   {
    "id": "source",
    "x": 40,
-   "y": 175,
-   "w": 260,
-   "h": 116,
-   "title": "01 / 读取来源",
+   "y": 215,
+   "w": 300,
+   "h": 144,
+   "title": "读取来源",
    "short": "读取来源",
    "sub": "仓库 · 文章 · 本地项目",
    "lines": [
     "保留源码中的真实关系",
     "识别入口、服务与数据层"
    ],
-   "layer": "input"
+   "layer": "input",
+   "step": "01"
   },
   {
    "id": "model",
-   "x": 410,
-   "y": 175,
-   "w": 260,
-   "h": 116,
-   "title": "02 / 架构建模",
+   "x": 440,
+   "y": 215,
+   "w": 300,
+   "h": 144,
+   "title": "架构建模",
    "short": "架构建模",
    "sub": "结构先行，配色表达语义",
    "lines": [
     "按内容选择布局结构",
     "每条连接都有明确含义"
    ],
-   "layer": "core"
+   "layer": "core",
+   "step": "02"
   },
   {
    "id": "schema",
-   "x": 780,
-   "y": 175,
-   "w": 260,
-   "h": 116,
-   "title": "03 / 可编辑规格",
+   "x": 840,
+   "y": 215,
+   "w": 300,
+   "h": 144,
+   "title": "可编辑规格",
    "short": "可编辑规格",
    "sub": "JSON 作为唯一内容来源",
    "lines": [
     "节点、分组、流向与标签",
     "修改规格即可重新生成"
    ],
-   "layer": "core"
+   "layer": "core",
+   "step": "03"
   },
   {
    "id": "deliver",
    "x": 40,
-   "y": 395,
-   "w": 260,
-   "h": 116,
-   "title": "06 / 分享与复用",
+   "y": 455,
+   "w": 300,
+   "h": 144,
+   "title": "分享与复用",
    "short": "分享与复用",
    "sub": "HTML · PNG · MP4 · GIF",
    "lines": [
     "单文件 HTML 离线可用",
     "Mermaid 便于继续编辑"
    ],
-   "layer": "output"
+   "layer": "output",
+   "step": "06"
   },
   {
    "id": "check",
-   "x": 410,
-   "y": 395,
-   "w": 260,
-   "h": 116,
-   "title": "05 / 布局检查",
+   "x": 440,
+   "y": 455,
+   "w": 300,
+   "h": 144,
+   "title": "布局检查",
    "short": "布局检查",
    "sub": "自动检查 + 截图审视",
    "lines": [
     "检测溢出、重叠和穿线",
     "检查通过后再交付"
    ],
-   "layer": "core"
+   "layer": "core",
+   "step": "05"
   },
   {
    "id": "engine",
-   "x": 780,
-   "y": 395,
-   "w": 260,
-   "h": 116,
-   "title": "04 / 动态渲染",
+   "x": 840,
+   "y": 455,
+   "w": 300,
+   "h": 144,
+   "title": "动态渲染",
    "short": "动态渲染",
    "sub": "自包含 HTML / CSS / SVG",
    "lines": [
     "语义连线与流动光点",
     "支持暂停与原始尺寸"
    ],
-   "layer": "output"
+   "layer": "output",
+   "step": "04"
   }
  ],
  "edges": [
@@ -326,12 +350,31 @@ body { background: var(--page); min-height: 100vh; }
   }
  ],
  "log": {
-  "title": "模拟 trace · 演示处理流程，非实时监控",
+  "title": "沿箭头读流程 · 以下为模拟数据交换",
   "live": {
-   "rows": 4
+   "rows": 3
   },
-  "y": 590
- }
+  "y": 680
+ },
+ "presentation": true,
+ "groups": [
+  {
+   "label": "A / 理解与建模",
+   "x": 24,
+   "y": 188,
+   "w": 1132,
+   "h": 194,
+   "color": "faint"
+  },
+  {
+   "label": "B / 渲染、检查与交付",
+   "x": 24,
+   "y": 428,
+   "w": 1132,
+   "h": 194,
+   "color": "faint"
+  }
+ ]
 }
 </script>
 <script>
@@ -339,6 +382,7 @@ body { background: var(--page); min-height: 100vh; }
 // draws orthogonal wires, then self-checks the layout (?check writes results to #__diag).
 (function () {
   const S = JSON.parse(document.getElementById('spec').textContent);
+  if (S.presentation === true) document.documentElement.classList.add('presentation');
   const CHECK = /[?&]check\b/.test(location.search);
   if (CHECK) document.documentElement.classList.add('check');
   const STILL = CHECK || matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -348,7 +392,16 @@ body { background: var(--page); min-height: 100vh; }
   const W = S.width || 1080;
   const NS = 'http://www.w3.org/2000/svg';
   const SHORT = { bl: 'blue', cy: 'cyan', gr: 'green', am: 'amber', pu: 'purple', rd: 'red', or: 'orange' };
-  const col = c => SHORT[c] || c || 'faint';
+  // only palette names ever reach markup or CSS: an unknown color (or one carrying quotes/markup) falls back to faint
+  const COLORS = new Set(['blue', 'cyan', 'green', 'amber', 'purple', 'red', 'orange', 'text', 'dim', 'faint']);
+  const badColors = new Set();
+  const col = c => {
+    if (c == null || c === '') return 'faint';
+    const k = Object.prototype.hasOwnProperty.call(SHORT, c) ? SHORT[c] : c;
+    if (typeof k === 'string' && COLORS.has(k)) return k;
+    badColors.add(String(c));
+    return 'faint';
+  };
   const cssv = n => getComputedStyle(document.documentElement).getPropertyValue('--' + n).trim();
   // UI words follow spec.lang (zh, en, ja, ko, es, th; anything else falls back to English)
   const UI = {
@@ -446,6 +499,7 @@ body { background: var(--page); min-height: 100vh; }
     d.id = n.id;
     tint(d, n.color || layerColor(n.layer)); place(d, n);
     if (n.status) el('span', 'st ' + n.status, fmt(n.statusText || LABEL[n.status] || n.status), d);
+    if (n.step != null) el('span', 'step', esc(n.step), d);
     if (n.title) el('div', 'ttl', fmt(n.title), d);
     if (n.sub) el('div', 'sub', fmt(n.sub), d);
     if (n.text) el('div', 'c', fmt(n.text), d);
@@ -707,7 +761,7 @@ body { background: var(--page); min-height: 100vh; }
     if (!o.what && (!A || !Z)) return;
     const f = FLOW[e.flow] || {};
     liveEdges.push({
-      who: o.who || e.flow || '·', color: o.color || k,
+      who: o.who || e.flow || '·', color: col(o.color || k),
       what: o.what || `${A} ${e.arrow === 'both' ? '⇄' : '→'} ${Z}`,
       detail: o.detail || (e.label ? plain(e.label).replace(/\n/g, ' ') : plain(f.label || '')),
       timing,
@@ -845,6 +899,7 @@ body { background: var(--page); min-height: 100vh; }
     if (x > Math.min(h.a[0], h.b[0]) + 1 && x < Math.max(h.a[0], h.b[0]) - 1 &&
         y > Math.min(v.a[1], v.b[1]) + 1 && y < Math.max(v.a[1], v.b[1]) - 1) crossings++;
   }
+  for (const c of badColors) issues.push(`unknown color ${JSON.stringify(c)} — use one of: ${[...COLORS].join(' ')} (or ${Object.keys(SHORT).join(' ')})`);
   if (crossings) warnings.push(`${crossings} wire crossing(s) — fine if unavoidable, but try reordering boxes first`);
 
   const pre = el('pre', null, null, document.body);
