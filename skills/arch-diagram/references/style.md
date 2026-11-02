@@ -26,3 +26,9 @@ Design reference: [baoyu-skills / baoyu-infographic](https://github.com/JimLiu/b
 - Graphite: charcoal canvas, muted warm accents and soft 14px corners.
 
 All themes keep semantic color roles and geometry. `assets/themes.json` is the shared token source for browser and export. Set `theme` in the spec or use `--theme` at build/export.
+
+## Explainer composition / Sketch palette
+
+A fifth whiteboard palette accompanies an opt-in `layout: "explainer"`. The mode follows the user's supplied teaching-infographic reference: black ink, a yellow highlighter title, blue circular panel markers, local Kai-style display/body fallbacks, outline pictograms, a session stack, a central blue Router, green Workers and small context/time diagrams. It keeps the four existing palettes and architecture layout available.
+
+Readability and geometry take precedence over imitating the reference's exact lettering. No external font download, image-generation dependency, or copied reference bitmap is included. The reference itself is not redistributed.

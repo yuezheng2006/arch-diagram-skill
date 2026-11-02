@@ -11,7 +11,7 @@ try {
   try {
     const themes = JSON.parse(document.getElementById('themes').textContent);
     const menu = document.querySelector('.theme-control select');
-    if (menu.options.length !== 4) throw Error('theme choices');
+    if (menu.options.length !== Object.keys(themes).length) throw Error('theme choices');
     const root = document.documentElement;
     const swatch = document.createElement('span'); document.body.appendChild(swatch);
     const rgb = hex => { swatch.style.color = hex; return getComputedStyle(swatch).color; };
@@ -39,11 +39,11 @@ try {
   for (const width of [390,1440]) {
     const dom = runChrome(findChrome(), [`--window-size=${width},1000`, '--dump-dom', fileUrl(file)]);
     assert(dom.includes('data-theme-test="passed"'), dom.match(/data-theme-test="([^"]*)"/)?.[1]);
-    console.log(`✓ four themes switch canvas and SVG colors; trace contrast ≥4.5; no overflow at ${width}px`);
+    console.log(`✓ theme presets switch canvas and SVG colors; trace contrast ≥4.5; no overflow at ${width}px`);
   }
   const fallback = runChrome(findChrome(), ['--dump-dom',fileUrl(resolve('docs/dsh-superagent.html'))+'?theme=not-a-theme']);
   assert(fallback.includes('data-theme="paper"'));
-  for (const id of ['paper','porcelain','blueprint','graphite']) {
+  for (const id of Object.keys(JSON.parse(readFileSync('skills/arch-diagram/assets/themes.json','utf8')))) {
     const out = join(dir,id+'.mmd');
     execFileSync(process.execPath,['bin/cli.mjs','export','docs/dsh-superagent.html',out,'--theme',id]);
     const tokens = JSON.parse(readFileSync('skills/arch-diagram/assets/themes.json','utf8'))[id].tokens;

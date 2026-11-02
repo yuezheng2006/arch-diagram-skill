@@ -113,4 +113,12 @@ Wire meaning comes from the declared `flows`: each kind of relationship gets one
 
 ## Theme
 
-Top-level `theme`: `paper` (default), `porcelain`, `blueprint`, `graphite`. The build command's `--theme NAME` overrides the spec. The export command accepts the same option for PNG/MP4/GIF/Mermaid. Unknown build/export themes fail before writing output; an unknown browser query theme falls back to paper. UI labels are Chinese for zh and English otherwise. Tokens are maintained in `assets/themes.json`, inlined at build time, and carried in the standalone HTML.
+Top-level `theme`: `paper` (default), `porcelain`, `blueprint`, `graphite`, `sketch`. The build command's `--theme NAME` overrides the spec. The export command accepts the same option for PNG/MP4/GIF/Mermaid. Unknown build/export themes fail before writing output; an unknown browser query theme falls back to paper. UI labels are Chinese for zh and English otherwise. Tokens are maintained in `assets/themes.json`, inlined at build time, and carried in the standalone HTML.
+
+## Illustrated explainer
+
+Set `layout: "explainer"` (omit `presentation`). If no theme is supplied, the builder embeds `theme: "sketch"`. Start panels below y≈130; reserve ≥60px inside each panel for the heading. Group `step` is a short escaped label displayed in a numbered badge. Standard node/edge coordinates and routing still apply.
+
+Node `shape`: `person`, `stack`, `hub`, `router`, `worker`, `store`, `event`, `callout`. Node `icon`: `person`, `chat`, `code`, `mail`, `tool`, `cloud`, `store`, `laptop`, `eye`. Unknown values render as a normal card or no icon. Person nodes need at least 110px height; stack nodes visually extend 20px up and left, so leave that space clear. Compact cards (h<75) use a smaller heading. Use ≥140px for title, subtitle and two explanatory lines; omit the subtitle for tight nodes.
+
+Groups are panel backgrounds; wires render above them, while cards and annotations render above wires. Dashed cards remain dashed. Avoid repeating literal text from a reference image: preserve its communication devices while deriving the content from cited sources.

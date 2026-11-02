@@ -1,0 +1,705 @@
+{
+  "lang": "zh-CN",
+  "width": 1280,
+  "layout": "explainer",
+  "theme": "sketch",
+  "title": "Super-agent：让任务自己流转",
+  "subtitle": "把会话管理交给系统：一个持续的交互入口，多个各自专注的执行上下文。",
+  "wireLegend": false,
+  "flows": [
+    {
+      "id": "route",
+      "label": "任务 / 结果流",
+      "color": "text"
+    },
+    {
+      "id": "direct",
+      "label": "已有订阅直通",
+      "color": "blue",
+      "dash": true
+    }
+  ],
+  "groups": [
+    {
+      "id": "before",
+      "x": 16,
+      "y": 132,
+      "w": 608,
+      "h": 256,
+      "label": "过去：人来维护多个会话",
+      "step": "1",
+      "color": "faint",
+      "solid": true
+    },
+    {
+      "id": "after",
+      "x": 656,
+      "y": 132,
+      "w": 608,
+      "h": 256,
+      "label": "现在：统一入口，多个任务",
+      "step": "2",
+      "color": "faint",
+      "solid": true
+    },
+    {
+      "id": "mechanism",
+      "x": 16,
+      "y": 410,
+      "w": 1248,
+      "h": 380,
+      "label": "原型怎样运转：接入 → 判断 → 执行 → 交付",
+      "step": "3",
+      "color": "faint",
+      "solid": true
+    },
+    {
+      "id": "context",
+      "x": 16,
+      "y": 812,
+      "w": 608,
+      "h": 300,
+      "label": "上下文：先给线索，需要时再展开",
+      "step": "4",
+      "color": "faint",
+      "solid": true
+    },
+    {
+      "id": "async",
+      "x": 656,
+      "y": 812,
+      "w": 608,
+      "h": 300,
+      "label": "长任务不挡住下一句对话",
+      "step": "5",
+      "color": "faint",
+      "solid": true
+    },
+    {
+      "id": "durability",
+      "x": 16,
+      "y": 1136,
+      "w": 1248,
+      "h": 250,
+      "label": "长期在线的设计方向：状态外置、环境解耦、独立监督",
+      "step": "6",
+      "color": "faint",
+      "solid": true
+    }
+  ],
+  "nodes": [
+    {
+      "id": "human",
+      "x": 48,
+      "y": 205,
+      "w": 105,
+      "h": 115,
+      "title": "使用者",
+      "shape": "person",
+      "color": "blue",
+      "icon": "person"
+    },
+    {
+      "id": "sessions",
+      "x": 278,
+      "y": 215,
+      "w": 290,
+      "h": 100,
+      "title": "会话 1 / 2 / 3 …",
+      "shape": "stack",
+      "color": "blue",
+      "lines": [
+        "任务进度散在不同窗口",
+        "需要手动切换、补充背景"
+      ]
+    },
+    {
+      "id": "chat-entry",
+      "x": 680,
+      "y": 194,
+      "w": 154,
+      "h": 44,
+      "title": "群聊 / IM",
+      "shape": "event",
+      "color": "blue",
+      "icon": "chat"
+    },
+    {
+      "id": "github-entry",
+      "x": 680,
+      "y": 249,
+      "w": 154,
+      "h": 44,
+      "title": "GitHub",
+      "shape": "event",
+      "color": "blue",
+      "icon": "code"
+    },
+    {
+      "id": "other-entry",
+      "x": 680,
+      "y": 304,
+      "w": 154,
+      "h": 44,
+      "title": "其他入口¹",
+      "shape": "event",
+      "color": "blue",
+      "icon": "mail"
+    },
+    {
+      "id": "agent-hub",
+      "x": 880,
+      "y": 215,
+      "w": 122,
+      "h": 122,
+      "title": "一个",
+      "shape": "hub",
+      "color": "blue",
+      "sub": "Super-agent"
+    },
+    {
+      "id": "task-list",
+      "x": 1060,
+      "y": 201,
+      "w": 174,
+      "h": 142,
+      "title": "并发任务",
+      "shape": "worker",
+      "color": "green",
+      "lines": [
+        "A · 复现问题",
+        "B · 处理评审",
+        "C · 其他请求"
+      ]
+    },
+    {
+      "id": "source",
+      "x": 40,
+      "y": 500,
+      "w": 200,
+      "h": 104,
+      "title": "来源 / Source",
+      "shape": "event",
+      "color": "blue",
+      "sub": "GitHub / 可选 Feishu",
+      "lines": [
+        "消息 / 评审 / CI"
+      ],
+      "icon": "chat"
+    },
+    {
+      "id": "gate",
+      "x": 300,
+      "y": 500,
+      "w": 200,
+      "h": 104,
+      "title": "准入 / Eval",
+      "shape": "callout",
+      "color": "amber",
+      "sub": "先程序筛选",
+      "lines": [
+        "再判断是否需要行动"
+      ]
+    },
+    {
+      "id": "main-router",
+      "x": 560,
+      "y": 485,
+      "w": 260,
+      "h": 144,
+      "title": "主会话 / Router",
+      "shape": "router",
+      "color": "blue",
+      "sub": "统一交流、接单与分派",
+      "lines": [
+        "跨任务协调与状态汇总",
+        "具体工作交给 Worker"
+      ]
+    },
+    {
+      "id": "executor-a",
+      "x": 940,
+      "y": 480,
+      "w": 280,
+      "h": 74,
+      "title": "Worker A · 修复问题",
+      "shape": "worker",
+      "color": "green",
+      "sub": "独立 Session / 任务目录"
+    },
+    {
+      "id": "executor-b",
+      "x": 940,
+      "y": 590,
+      "w": 280,
+      "h": 74,
+      "title": "Worker B · 处理评审",
+      "shape": "worker",
+      "color": "green",
+      "sub": "自己的上下文与执行实例"
+    },
+    {
+      "id": "delivery",
+      "x": 560,
+      "y": 707,
+      "w": 260,
+      "h": 52,
+      "title": "Outbox → 原线程交付",
+      "shape": "event",
+      "color": "blue",
+      "icon": "mail"
+    },
+    {
+      "id": "current",
+      "x": 40,
+      "y": 888,
+      "w": 220,
+      "h": 120,
+      "title": "当前上下文",
+      "shape": "router",
+      "color": "blue",
+      "lines": [
+        "近期消息摘要",
+        "Thread ID / Ticket ID",
+        "保留下一跳的引用"
+      ]
+    },
+    {
+      "id": "thread-ref",
+      "x": 360,
+      "y": 884,
+      "w": 220,
+      "h": 54,
+      "title": "Thread #08 · 相关消息",
+      "shape": "event",
+      "color": "blue"
+    },
+    {
+      "id": "ticket-ref",
+      "x": 360,
+      "y": 972,
+      "w": 220,
+      "h": 54,
+      "title": "Ticket #03 · 执行进度",
+      "shape": "event",
+      "color": "blue"
+    },
+    {
+      "id": "old-msg",
+      "x": 680,
+      "y": 902,
+      "w": 140,
+      "h": 46,
+      "title": "收到消息",
+      "shape": "event",
+      "color": "blue"
+    },
+    {
+      "id": "old-run",
+      "x": 870,
+      "y": 902,
+      "w": 170,
+      "h": 46,
+      "title": "同步运行工具",
+      "shape": "event",
+      "color": "blue",
+      "dashed": true
+    },
+    {
+      "id": "old-reply",
+      "x": 1090,
+      "y": 902,
+      "w": 144,
+      "h": 46,
+      "title": "后续输入等待",
+      "shape": "callout",
+      "color": "red"
+    },
+    {
+      "id": "new-msg",
+      "x": 680,
+      "y": 1004,
+      "w": 140,
+      "h": 46,
+      "title": "收到消息",
+      "shape": "event",
+      "color": "blue"
+    },
+    {
+      "id": "new-run",
+      "x": 870,
+      "y": 1004,
+      "w": 170,
+      "h": 46,
+      "title": "启动后台工具",
+      "shape": "router",
+      "color": "blue"
+    },
+    {
+      "id": "new-reply",
+      "x": 1090,
+      "y": 1004,
+      "w": 144,
+      "h": 46,
+      "title": "接收新消息",
+      "shape": "worker",
+      "color": "green"
+    },
+    {
+      "id": "cloud-loop",
+      "x": 40,
+      "y": 1212,
+      "w": 250,
+      "h": 110,
+      "title": "Agent Loop",
+      "shape": "store",
+      "color": "purple",
+      "sub": "计算可重启或替换",
+      "lines": [
+        "文章 §5 的云端方案"
+      ],
+      "icon": "cloud",
+      "dashed": true
+    },
+    {
+      "id": "session-db",
+      "x": 370,
+      "y": 1212,
+      "w": 210,
+      "h": 110,
+      "title": "会话状态",
+      "shape": "store",
+      "color": "purple",
+      "sub": "持久化在计算之外",
+      "icon": "store",
+      "dashed": true
+    },
+    {
+      "id": "device",
+      "x": 690,
+      "y": 1212,
+      "w": 260,
+      "h": 110,
+      "title": "执行环境留在原地",
+      "shape": "event",
+      "color": "blue",
+      "sub": "端侧 daemon 执行命令",
+      "lines": [
+        "文章 §5；不宣称原型已具备"
+      ],
+      "icon": "laptop",
+      "dashed": true
+    },
+    {
+      "id": "watchdog",
+      "x": 1010,
+      "y": 1212,
+      "w": 220,
+      "h": 110,
+      "title": "Watchdog",
+      "shape": "callout",
+      "color": "amber",
+      "sub": "独立观察进展与异常",
+      "lines": [
+        "文章 §6 的监督回路"
+      ],
+      "icon": "eye",
+      "dashed": true
+    }
+  ],
+  "edges": [
+    {
+      "from": "human.r",
+      "to": "sessions.l",
+      "label": "来回切换",
+      "flow": "route",
+      "log": false,
+      "labelPos": [
+        214,
+        255
+      ]
+    },
+    {
+      "from": "chat-entry.r",
+      "to": "agent-hub.l",
+      "label": "",
+      "flow": "route",
+      "log": false
+    },
+    {
+      "from": "github-entry.r",
+      "to": "agent-hub.l",
+      "label": "",
+      "flow": "route",
+      "log": false
+    },
+    {
+      "from": "other-entry.r",
+      "to": "agent-hub.l",
+      "label": "",
+      "flow": "route",
+      "log": false
+    },
+    {
+      "from": "agent-hub.r",
+      "to": "task-list.l",
+      "label": "",
+      "flow": "route",
+      "log": false
+    },
+    {
+      "from": "source.r",
+      "to": "gate.l",
+      "label": "",
+      "flow": "route",
+      "log": false
+    },
+    {
+      "from": "gate.r",
+      "to": "main-router.l",
+      "label": "",
+      "flow": "route",
+      "log": false
+    },
+    {
+      "from": "main-router.r@0.25",
+      "to": "executor-a.l",
+      "label": "分派 / 报告",
+      "flow": "route",
+      "log": false,
+      "arrow": "both",
+      "labelPos": [
+        880,
+        490
+      ]
+    },
+    {
+      "from": "main-router.r@0.8",
+      "to": "executor-b.l",
+      "label": "分派 / 报告",
+      "flow": "route",
+      "log": false,
+      "arrow": "both",
+      "labelPos": [
+        880,
+        601
+      ]
+    },
+    {
+      "from": "main-router.b",
+      "to": "delivery.t",
+      "label": "简短结论",
+      "flow": "route",
+      "log": false,
+      "labelPos": [
+        742,
+        669
+      ]
+    },
+    {
+      "from": "source.b",
+      "to": "executor-b.b",
+      "label": "已有 Thread 的后续事件直接送达",
+      "flow": "direct",
+      "log": false,
+      "via": [
+        [
+          140,
+          682
+        ],
+        [
+          1080,
+          682
+        ]
+      ],
+      "labelPos": [
+        340,
+        669
+      ]
+    },
+    {
+      "from": "current.r",
+      "to": "thread-ref.l",
+      "label": "按需读取",
+      "flow": "direct",
+      "log": false,
+      "labelPos": [
+        310,
+        925
+      ]
+    },
+    {
+      "from": "thread-ref.b",
+      "to": "ticket-ref.t",
+      "label": "继续展开",
+      "flow": "direct",
+      "log": false,
+      "labelPos": [
+        520,
+        956
+      ]
+    },
+    {
+      "from": "old-msg.r",
+      "to": "old-run.l",
+      "label": "",
+      "flow": "route",
+      "log": false
+    },
+    {
+      "from": "old-run.r",
+      "to": "old-reply.l",
+      "label": "",
+      "flow": "route",
+      "log": false
+    },
+    {
+      "from": "new-msg.r",
+      "to": "new-run.l",
+      "label": "",
+      "flow": "route",
+      "log": false
+    },
+    {
+      "from": "new-run.r",
+      "to": "new-reply.l",
+      "label": "",
+      "flow": "route",
+      "log": false
+    },
+    {
+      "from": "cloud-loop.r",
+      "to": "session-db.l",
+      "label": "读 / 写",
+      "flow": "route",
+      "log": false,
+      "arrow": "both"
+    },
+    {
+      "from": "cloud-loop.b",
+      "to": "device.b",
+      "label": "命令与结果",
+      "flow": "route",
+      "log": false,
+      "via": [
+        [
+          165,
+          1346
+        ],
+        [
+          820,
+          1346
+        ]
+      ],
+      "labelPos": [
+        510,
+        1338
+      ],
+      "arrow": "both"
+    },
+    {
+      "from": "watchdog.b",
+      "to": "cloud-loop.b",
+      "label": "外部监督",
+      "flow": "direct",
+      "log": false,
+      "via": [
+        [
+          1120,
+          1367
+        ],
+        [
+          165,
+          1367
+        ]
+      ],
+      "labelPos": [
+        1000,
+        1360
+      ]
+    }
+  ],
+  "notes": [
+    {
+      "id": "before-note",
+      "x": 40,
+      "y": 340,
+      "w": 555,
+      "text": "每个会话都能工作，但跨任务的连续性要靠人维护。",
+      "dim": false,
+      "align": "left"
+    },
+    {
+      "id": "after-note",
+      "x": 680,
+      "y": 350,
+      "w": 554,
+      "text": "¹ 文章讨论多信道；公开原型接入 GitHub 与可选飞书。",
+      "dim": false,
+      "align": "left"
+    },
+    {
+      "id": "mechanism-note",
+      "x": 40,
+      "y": 730,
+      "w": 450,
+      "text": "接单产生 Ticket 与 Mandate。\n结果可供验收时再通知人；ready 不等于已合并。",
+      "dim": false,
+      "align": "left"
+    },
+    {
+      "id": "context-note",
+      "x": 40,
+      "y": 1065,
+      "w": 550,
+      "text": "完整信息放在窗口外，沿 ID 逐跳找回。\n对应文章 §3.3 的 Inline / Spill 与链式召回。",
+      "dim": false,
+      "align": "left"
+    },
+    {
+      "id": "old-way",
+      "x": 680,
+      "y": 864,
+      "w": 550,
+      "text": "同步循环：工具未结束，新输入只能等。",
+      "dim": false,
+      "align": "left"
+    },
+    {
+      "id": "new-way",
+      "x": 680,
+      "y": 965,
+      "w": 550,
+      "text": "异步循环：先返回 Started，工具继续在后台运行。",
+      "dim": false,
+      "align": "left"
+    },
+    {
+      "id": "async-note",
+      "x": 680,
+      "y": 1065,
+      "w": 550,
+      "text": "工具完成后，再以事件返回结果（文章 §4.1）。\n原型的后台执行细节见 docs/003。",
+      "dim": false,
+      "align": "left"
+    },
+    {
+      "id": "sources-foot",
+      "x": 24,
+      "y": 1404,
+      "w": 1232,
+      "text": "资料：DeepSeek 产品部《Super-agent 设计探索》署名转载；官方原型 6337fc8 的 README 与 docs/001、003、007。",
+      "dim": false,
+      "align": "left"
+    },
+    {
+      "id": "boundary-foot",
+      "x": 24,
+      "y": 1430,
+      "w": 1232,
+      "text": "阅读边界：第 3 块简化展示公开原型；其余为概念讲解。虚框表示文章方案；光点是机制演示，不是实际运行记录。",
+      "dim": false,
+      "align": "left"
+    }
+  ]
+}

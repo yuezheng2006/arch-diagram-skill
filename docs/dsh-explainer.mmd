@@ -1,0 +1,87 @@
+flowchart LR
+  %% Super-agent：让任务自己流转
+  subgraph before["过去：人来维护多个会话"]
+    human["<b>使用者</b>"]:::none
+    sessions["<b>会话 1 / 2 / 3 …</b><br/>任务进度散在不同窗口<br/>需要手动切换、补充背景"]:::none
+  end
+  subgraph after["现在：统一入口，多个任务"]
+    chat_entry["<b>群聊 / IM</b>"]:::none
+    github_entry["<b>GitHub</b>"]:::none
+    other_entry["<b>其他入口¹</b>"]:::none
+    agent_hub["<b>一个</b><br/>Super-agent"]:::none
+    task_list["<b>并发任务</b><br/>A · 复现问题<br/>B · 处理评审<br/>C · 其他请求"]:::none
+  end
+  subgraph mechanism["原型怎样运转：接入 → 判断 → 执行 → 交付"]
+    source["<b>来源 / Source</b><br/>GitHub / 可选 Feishu<br/>消息 / 评审 / CI"]:::none
+    gate["<b>准入 / Eval</b><br/>先程序筛选<br/>再判断是否需要行动"]:::none
+    main_router["<b>主会话 / Router</b><br/>统一交流、接单与分派<br/>跨任务协调与状态汇总<br/>具体工作交给 Worker"]:::none
+    executor_a["<b>Worker A · 修复问题</b><br/>独立 Session / 任务目录"]:::none
+    executor_b["<b>Worker B · 处理评审</b><br/>自己的上下文与执行实例"]:::none
+    delivery["<b>Outbox → 原线程交付</b>"]:::none
+  end
+  subgraph context["上下文：先给线索，需要时再展开"]
+    current["<b>当前上下文</b><br/>近期消息摘要<br/>Thread ID / Ticket ID<br/>保留下一跳的引用"]:::none
+    thread_ref["<b>Thread #08 · 相关消息</b>"]:::none
+    ticket_ref["<b>Ticket #03 · 执行进度</b>"]:::none
+  end
+  subgraph async["长任务不挡住下一句对话"]
+    old_msg["<b>收到消息</b>"]:::none
+    old_run["<b>同步运行工具</b>"]:::none
+    old_reply["<b>后续输入等待</b>"]:::none
+    new_msg["<b>收到消息</b>"]:::none
+    new_run["<b>启动后台工具</b>"]:::none
+    new_reply["<b>接收新消息</b>"]:::none
+  end
+  subgraph durability["长期在线的设计方向：状态外置、环境解耦、独立监督"]
+    cloud_loop["<b>Agent Loop</b><br/>计算可重启或替换<br/>文章 §5 的云端方案"]:::none
+    session_db["<b>会话状态</b><br/>持久化在计算之外"]:::none
+    device["<b>执行环境留在原地</b><br/>端侧 daemon 执行命令<br/>文章 §5；不宣称原型已具备"]:::none
+    watchdog["<b>Watchdog</b><br/>独立观察进展与异常<br/>文章 §6 的监督回路"]:::none
+  end
+  human -->|"来回切换"| sessions
+  chat_entry --> agent_hub
+  github_entry --> agent_hub
+  other_entry --> agent_hub
+  agent_hub --> task_list
+  source --> gate
+  gate --> main_router
+  main_router -->|"分派 / 报告"| executor_a
+  main_router -->|"分派 / 报告"| executor_b
+  main_router -->|"简短结论"| delivery
+  source -.->|"已有 Thread 的后续事件直接送达"| executor_b
+  current -.->|"按需读取"| thread_ref
+  thread_ref -.->|"继续展开"| ticket_ref
+  old_msg --> old_run
+  old_run --> old_reply
+  new_msg --> new_run
+  new_run --> new_reply
+  cloud_loop -->|"读 / 写"| session_db
+  cloud_loop -->|"命令与结果"| device
+  watchdog -.->|"外部监督"| cloud_loop
+  linkStyle 0 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 1 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 2 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 3 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 4 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 5 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 6 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 7 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 8 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 9 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 10 stroke:#075bb8,stroke-width:1.5px
+  linkStyle 11 stroke:#075bb8,stroke-width:1.5px
+  linkStyle 12 stroke:#075bb8,stroke-width:1.5px
+  linkStyle 13 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 14 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 15 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 16 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 17 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 18 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 19 stroke:#075bb8,stroke-width:1.5px
+  classDef none fill:#ffffff,stroke:#90a2b6,color:#1f2830
+  style before fill:transparent,stroke:#90a2b6,stroke-dasharray:0,color:#90a2b6
+  style after fill:transparent,stroke:#90a2b6,stroke-dasharray:0,color:#90a2b6
+  style mechanism fill:transparent,stroke:#90a2b6,stroke-dasharray:0,color:#90a2b6
+  style context fill:transparent,stroke:#90a2b6,stroke-dasharray:0,color:#90a2b6
+  style async fill:transparent,stroke:#90a2b6,stroke-dasharray:0,color:#90a2b6
+  style durability fill:transparent,stroke:#90a2b6,stroke-dasharray:0,color:#90a2b6

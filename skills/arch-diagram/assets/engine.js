@@ -2,6 +2,7 @@
 // draws orthogonal wires, then self-checks the layout (?check writes results to #__diag).
 (function () {
   const S = JSON.parse(document.getElementById('spec').textContent);
+  if (S.layout === 'explainer') document.documentElement.classList.add('explainer');
   if (S.presentation === true) document.documentElement.classList.add('presentation');
   const THEMES = JSON.parse(document.getElementById('themes').textContent);
   const params = new URLSearchParams(location.search);
@@ -118,17 +119,35 @@
     if (g.id) d.id = g.id;
     tint(d, g.color); place(d, g);
     if (g.label) {
-      const lg = el('div', 'glg', fmt(g.label), d);
+      const lg = el('div', 'glg', (g.step != null ? `<span class="panel-step">${esc(g.step)}</span>` : '') + fmt(g.label), d);
       if (g.labelRight) { lg.style.left = 'auto'; lg.style.right = '16px'; }
     }
   }
 
   // ---------- nodes ----------
   const layerColor = id => ((S.layers || []).find(l => l.id === id) || {}).color;
+  const ICONS = {
+    chat: '<path d="M4 5h23v15H15l-7 6v-6H4z"/><path d="M9 11h12M9 15h8"/>',
+    code: '<path d="M11 7L3 16l8 9M21 7l8 9-8 9M19 4l-6 24"/>',
+    mail: '<rect x="3" y="6" width="26" height="20" rx="3"/><path d="M4 8l12 10L28 8"/>',
+    tool: '<path d="M20 3a8 8 0 0 0-10 10L3 23l5 5 10-10A8 8 0 0 0 29 8l-6 5-5-5z"/>',
+    cloud: '<path d="M8 25C0 25 0 13 8 13 7 0 25 1 25 13c9-1 10 12 1 12z"/>',
+    store: '<ellipse cx="16" cy="6" rx="12" ry="4"/><path d="M4 6v20c0 5 24 5 24 0V6M4 16c0 5 24 5 24 0"/>',
+    person: '<circle cx="16" cy="6" r="4"/><path d="M16 10v12M5 16l11-5 11 6M16 22L7 31M16 22l9 9"/>',
+    laptop: '<path d="M6 5h20v17H6zM2 27h28l-4-5H6z"/>',
+    eye: '<path d="M2 16Q16 0 30 16Q16 32 2 16z"/><circle cx="16" cy="16" r="5"/>'
+  };
+  const SHAPES = new Set(['person','stack','hub','router','worker','store','event','callout']);
   const rails = [];
   for (const n of S.nodes || []) {
     const d = el('div', 'box' + (n.dashed ? ' dash' : '') + (n.status ? ' is-' + n.status : '') + (n.kind === 'rail' ? ' rail' : ''), null, stage);
     d.id = n.id;
+    if (SHAPES.has(n.shape)) d.classList.add('shape-' + n.shape);
+    if (n.h && n.h < 75) d.classList.add('compact');
+    if (Object.hasOwn(ICONS, n.icon)) {
+      const icon = el('span', 'node-icon', `<svg viewBox="0 0 32 32" aria-hidden="true">${ICONS[n.icon]}</svg>`, d);
+      icon.setAttribute('aria-hidden', 'true'); d.classList.add('has-icon');
+    }
     tint(d, n.color || layerColor(n.layer)); place(d, n);
     if (n.status) el('span', 'st ' + n.status, fmt(n.statusText || LABEL[n.status] || n.status), d);
     if (n.step != null) el('span', 'step', esc(n.step), d);

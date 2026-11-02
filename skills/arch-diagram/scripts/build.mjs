@@ -26,6 +26,7 @@ try {
 
 if (themeAt >= 0 && !themeOverride) { console.error('--theme needs a name'); process.exit(2); }
 if (themeOverride) spec.theme = themeOverride;
+if (spec.layout === 'explainer' && !spec.theme) spec.theme = 'sketch';
 if (spec.theme && !Object.hasOwn(themes, spec.theme)) { console.error('unknown theme: ' + spec.theme); process.exit(2); }
 
 // cheap structural checks; layout problems are caught later by check.mjs
@@ -56,7 +57,7 @@ const escHtml = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>':
 const fill = {
   __LANG__: escHtml(spec.lang || 'zh-CN'),
   __TITLE__: escHtml(spec.pageTitle || plain(spec.title) || 'Architecture'),
-  __CSS__: read('style.css'),
+  __CSS__: read('style.css') + '\n' + read('explainer.css'),
   __THEMES__: JSON.stringify(themes).replace(/</g, '\\u003c'),
   // keep "</script>" inside strings from closing the tag early
   __SPEC__: JSON.stringify(spec, null, 1).replace(/</g, '\\u003c'),

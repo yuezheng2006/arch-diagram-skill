@@ -8,7 +8,23 @@
 
 下载 `docs/atelier.html` 后可离线打开交互示例；`skills/arch-diagram/examples/atelier.json` 是可编辑源文件。示例是本技能自身的处理流程示意，动态 trace 表示模拟数据交换，不是真实运行监控。
 
-## 四套预制主题
+## 讲解板：参考图风格的新排版
+
+新增 `layout: "explainer"`，通过六个不同结构的画面讲清 DSH Super-agent：会话对比、统一入口、工作流程、上下文展开、异步交互和持续在线方案。黑色线稿、黄色标记标题、蓝色编号和语义色块共同建立层级，保留动态光点与可编辑规格。
+
+![DSH 讲解板](docs/dsh-explainer.png)
+
+[交互 HTML](docs/dsh-explainer.html) · [12 秒动态视频](docs/dsh-explainer.mp4) · [可编辑规格](skills/arch-diagram/examples/dsh-explainer.json) · [信源与边界](docs/dsh-explainer.sources.md)
+
+```bash
+node bin/cli.mjs build skills/arch-diagram/examples/dsh-explainer.json docs/dsh-explainer.html
+node bin/cli.mjs check docs/dsh-explainer.html
+node bin/cli.mjs export docs/dsh-explainer.html dsh.png dsh.mp4 --seconds 12 --scale 1
+```
+
+原有架构图模式继续保留；讲解板是内容组织方式，主题切换控制配色。参考图片仅用于提取视觉方向，未打包或转发到仓库。
+
+## 五套预制主题
 
 | 主题 | 参数 | 适用场景 |
 | --- | --- | --- |
@@ -16,6 +32,7 @@
 | 冷瓷 | `porcelain` | 产品文档、技术分享 |
 | 蓝图 | `blueprint` | 深色工程架构 |
 | 石墨 | `graphite` | 中性深色演示 |
+| 白板 | `sketch` | 讲解板、教学示意 |
 
 HTML 顶部可即时切换主题，选择保存在网址中；切换不会暂停动画。导出使用内嵌默认主题，或显式指定同名参数：
 
@@ -30,7 +47,7 @@ node bin/cli.mjs export docs/dsh-superagent.html dsh.png dsh.mp4 dsh.mmd --theme
 
 示例以 DeepSeek 产品部文章的署名转载与官方原型文档交叉核对。上部画事件准入、Router、订阅直通、并发 Worker、持久状态与交付；下部虚框单列 Watchdog 和存算/环境分离的文章方案。A/B 任务和 trace 为教学示意。
 
-测试：`npm test`、`node tests/controls.mjs`、`node tests/themes.mjs`。主题测试覆盖窄屏、SVG 同步变色、次要文字对比度和 Mermaid 配色，错误主题会在构建/导出前被拒绝。
+测试：`npm test`、`node tests/controls.mjs`、`node tests/themes.mjs`、`node tests/explainer.mjs`。主题测试覆盖窄屏、SVG 同步变色、次要文字对比度和 Mermaid 配色，错误主题会在构建/导出前被拒绝。
 
 ## 安装定制版
 

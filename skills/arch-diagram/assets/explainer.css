@@ -1,0 +1,46 @@
+/* Explainer: annotated storyboard, inspired by the user's hand-drawn reference. */
+.explainer body { font-family: var(--font-body, -apple-system, sans-serif); font-size: 15px; }
+.explainer #fit { border: 0; border-radius: 0; box-shadow: none; }
+.explainer #stage { background-image: none; }
+.explainer #head { text-align: left; padding: 4px 24px; }
+.explainer #head .t { display: inline-block; font: 800 38px/1.3 var(--font-display, sans-serif); color: var(--head); background: linear-gradient(transparent 45%, var(--highlight, #ffe777) 45%, var(--highlight, #ffe777) 90%, transparent 90%); padding: 0 8px; border-radius: 12px 5px 9px 7px; }
+.explainer #head > .dim { font-size: 17px; margin-top: 5px; color: var(--text); }
+.explainer #head .rule { display: none; }
+.explainer #head .lg { font-size: 12px; margin: 0 12px 0 0; }
+.explainer .group { border: 1.3px solid var(--border); background: var(--panel); border-radius: 19px 15px 21px 13px; }
+.explainer .group .glg { top: 10px; left: 12px; padding: 0 10px 0 0; color: var(--blue); background: color-mix(in srgb, var(--blue) 10%, var(--panel)); border-radius: 24px; font: 750 21px/34px var(--font-display, sans-serif); letter-spacing: 0; }
+.explainer .panel-step { display: inline-block; width: 32px; height: 32px; margin-right: 10px; border-radius: 50%; background: var(--blue); color: var(--panel); text-align: center; font: 700 22px/32px var(--font-display, sans-serif); }
+.explainer .box { border: 1.6px solid var(--head); border-radius: 11px 8px 13px 7px; background: var(--panel); padding: 12px; box-shadow: none; }
+.explainer .box:hover { box-shadow: 2px 3px 0 var(--border); }
+.explainer .box .ttl { text-align: left; font: 700 19px/1.4 var(--font-display, sans-serif); color: var(--head); }
+.explainer .box .sub { text-align: left; font-size: 15px; color: var(--text); margin-top: 3px; }
+.explainer .box .c { text-align: left; color: var(--text); }
+.explainer .box .dim { font-size: 15px; }
+.explainer .box.compact { padding: 7px 10px; }
+.explainer .box.compact .ttl { font-size: 17px; line-height: 25px; }
+.explainer .node-icon { display: inline-block; position: absolute; left: 10px; top: 12px; width: 26px; height: 26px; color: var(--head); }
+.explainer .node-icon svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.explainer .has-icon > .ttl { padding-left: 32px; }
+.explainer .compact .node-icon { top: 8px; }
+.explainer .shape-person { border: 0; background: transparent; }
+.explainer .shape-person .node-icon { width: 62px; height: 72px; top: 0; left: calc(50% - 31px); }
+.explainer .shape-person > .ttl { padding: 74px 0 0; text-align: center; font-size: 16px; }
+.explainer .shape-stack { box-shadow: -10px -9px 0 var(--panel), -10px -9px 0 1.4px var(--head), -20px -18px 0 var(--panel), -20px -18px 0 1.4px var(--head); }
+.explainer .shape-hub { border-radius: 48% 52% 51% 49%; border-color: var(--blue); background: color-mix(in srgb, var(--blue) 24%, var(--panel)); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.explainer .shape-hub .ttl, .explainer .shape-hub .sub { text-align: center; }
+.explainer .shape-router { border-color: var(--blue); background: color-mix(in srgb, var(--blue) 24%, var(--panel)); box-shadow: 4px 4px 0 color-mix(in srgb, var(--blue) 20%, var(--panel)); }
+.explainer .shape-worker { border-color: var(--green); background: color-mix(in srgb, var(--green) 18%, var(--panel)); }
+.explainer .shape-event { background: color-mix(in srgb, var(--faint) 8%, var(--panel)); }
+.explainer .shape-store { border-color: var(--purple); background: color-mix(in srgb, var(--purple) 14%, var(--panel)); }
+.explainer .shape-callout { border-color: var(--orange); background: color-mix(in srgb, var(--amber) 18%, var(--panel)); }
+.explainer .note { font-size: 16px; color: var(--text); line-height: 1.45; }
+.explainer .lbl { font: 14px var(--font-body, sans-serif); }
+.explainer .group .glg { white-space: nowrap; }
+.explainer #wires { z-index: 1; }
+.explainer .group { z-index: 0; }
+.explainer .box, .explainer .note, .explainer #head { z-index: 2; }
+.explainer .box.dash { border-style: dashed; }
+.explainer .shape-router, .explainer .shape-hub { background: var(--fill-router, color-mix(in srgb, var(--blue) 24%, var(--panel))); }
+.explainer .shape-worker { background: var(--fill-worker, color-mix(in srgb, var(--green) 18%, var(--panel))); }
+.explainer .shape-callout { background: var(--fill-callout, color-mix(in srgb, var(--amber) 18%, var(--panel))); }
+.explainer .shape-store { background: var(--fill-store, color-mix(in srgb, var(--purple) 14%, var(--panel))); }
