@@ -24,6 +24,12 @@ node bin/cli.mjs export docs/dsh-explainer.html dsh.png dsh.mp4 --seconds 12 --s
 
 原有架构图模式继续保留；讲解板是内容组织方式，主题切换控制配色。参考图片仅用于提取视觉方向，未打包或转发到仓库。
 
+## 另一个题材：音乐伴奏提取
+
+沿用讲解板视觉，以 Demucs v4 的源码机制为依据，讲解混合音频、时域/频域编码、跨域 Transformer、重叠拼接和两轨输出。版式按音频处理流程组织，没有套用 Agent 任务结构。
+
+[预览 PNG](docs/music-separation.png) · [交互 HTML](docs/music-separation.html) · [12 秒视频](docs/music-separation.mp4) · [可编辑规格](skills/arch-diagram/examples/music-separation.json) · [信源说明](docs/music-separation.sources.md)
+
 ## 五套预制主题
 
 | 主题 | 参数 | 适用场景 |

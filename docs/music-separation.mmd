@@ -1,0 +1,56 @@
+flowchart LR
+  %% 把一首歌，拆成人声与伴奏
+  subgraph overview["拆开的不是音量，而是模型估计的不同声部"]
+    mix["<b>一首混合音乐</b><br/>人声、鼓、贝斯和其他声音<br/>示意波形：▂ ▅ ▃ ▆ ▁ ▅"]:::none
+    demucs["<b>Demucs</b><br/>估计各个声部"]:::none
+    stems["<b>四条独立的估计轨道</b><br/>vocals  /  drums  /  bass  /  other<br/>人声 / 鼓 / 贝斯 / 其他 · 四条并列输出"]:::none
+  end
+  subgraph hybrid["混合域协同：一条看波形，一条看频谱"]
+    prepare["<b>准备音频</b><br/>解码与重采样<br/>对齐采样率 / 声道"]:::none
+    time_encoder["<b>时域编码器</b><br/>从波形提取特征"]:::none
+    freq_encoder["<b>频域编码器</b><br/>从 STFT 频谱提取特征"]:::none
+    cross_transformer["<b>跨域 Transformer</b><br/>域内注意力 + 跨域交互<br/>联合处理两种表示"]:::none
+    reconstruct["<b>双域解码与重建</b><br/>还原各声部的波形<br/>频域重建与时域分支融合"]:::none
+  end
+  subgraph segments["长音频：分段处理，再重叠拼回"]
+    whole_track["<b>整首歌曲</b>"]:::none
+    chunks["<b>片段 1 / 2 / 3 …</b>"]:::none
+    joined["<b>重叠加权 → 连续声部</b>"]:::none
+  end
+  subgraph karaoke["两轨模式 ≠ 只计算两条声部"]
+    all_stems["<b>先完整分离</b><br/>人声 / 鼓 / 贝斯 / 其他"]:::none
+    vocals["<b>人声轨</b><br/>vocals"]:::none
+    accompaniment["<b>伴奏轨</b><br/>其余声部组合"]:::none
+  end
+  subgraph reading["怎样理解结果：可以单独使用声部，也要听实际效果"]
+    quality["<b>分离可能残留串音或产生伪影</b>"]:::none
+    simulation["<b>本图演示处理机制，未实际运行音频分离</b>"]:::none
+  end
+  mix -->|"送入模型"| demucs
+  demucs -->|"估计声部"| stems
+  prepare --> time_encoder
+  prepare --> freq_encoder
+  time_encoder --> cross_transformer
+  freq_encoder --> cross_transformer
+  cross_transformer -->|"解码"| reconstruct
+  whole_track -->|"切片"| chunks
+  chunks -->|"片段推理"| joined
+  all_stems -->|"保留人声"| vocals
+  all_stems -.->|"组合其余声部"| accompaniment
+  linkStyle 0 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 1 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 2 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 3 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 4 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 5 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 6 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 7 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 8 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 9 stroke:#1f2830,stroke-width:1.5px
+  linkStyle 10 stroke:#075bb8,stroke-width:1.5px
+  classDef none fill:#ffffff,stroke:#90a2b6,color:#1f2830
+  style overview fill:transparent,stroke:#90a2b6,stroke-dasharray:0,color:#90a2b6
+  style hybrid fill:transparent,stroke:#90a2b6,stroke-dasharray:0,color:#90a2b6
+  style segments fill:transparent,stroke:#90a2b6,stroke-dasharray:0,color:#90a2b6
+  style karaoke fill:transparent,stroke:#90a2b6,stroke-dasharray:0,color:#90a2b6
+  style reading fill:transparent,stroke:#90a2b6,stroke-dasharray:0,color:#90a2b6

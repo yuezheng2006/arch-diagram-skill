@@ -1,0 +1,440 @@
+{
+  "lang": "zh-CN",
+  "width": 1280,
+  "layout": "explainer",
+  "theme": "sketch",
+  "title": "把一首歌，拆成人声与伴奏",
+  "subtitle": "DEMUCS v4 / 从混合音频到独立声部：模型看见什么，又怎样拼回完整歌曲？",
+  "wireLegend": false,
+  "flows": [
+    {
+      "id": "audio",
+      "label": "音频 / 特征流",
+      "color": "text"
+    },
+    {
+      "id": "merge",
+      "label": "组合与重建",
+      "color": "blue",
+      "dash": true
+    }
+  ],
+  "groups": [
+    {
+      "id": "overview",
+      "x": 16,
+      "y": 132,
+      "w": 1248,
+      "h": 245,
+      "label": "拆开的不是音量，而是模型估计的不同声部",
+      "step": "1",
+      "color": "faint",
+      "solid": true
+    },
+    {
+      "id": "hybrid",
+      "x": 16,
+      "y": 400,
+      "w": 1248,
+      "h": 340,
+      "label": "混合域协同：一条看波形，一条看频谱",
+      "step": "2",
+      "color": "faint",
+      "solid": true
+    },
+    {
+      "id": "segments",
+      "x": 16,
+      "y": 764,
+      "w": 608,
+      "h": 280,
+      "label": "长音频：分段处理，再重叠拼回",
+      "step": "3",
+      "color": "faint",
+      "solid": true
+    },
+    {
+      "id": "karaoke",
+      "x": 656,
+      "y": 764,
+      "w": 608,
+      "h": 280,
+      "label": "两轨模式 ≠ 只计算两条声部",
+      "step": "4",
+      "color": "faint",
+      "solid": true
+    },
+    {
+      "id": "reading",
+      "x": 16,
+      "y": 1070,
+      "w": 1248,
+      "h": 145,
+      "label": "怎样理解结果：可以单独使用声部，也要听实际效果",
+      "step": "5",
+      "color": "faint",
+      "solid": true
+    }
+  ],
+  "nodes": [
+    {
+      "id": "mix",
+      "x": 70,
+      "y": 207,
+      "w": 260,
+      "h": 112,
+      "title": "一首混合音乐",
+      "shape": "stack",
+      "color": "blue",
+      "lines": [
+        "人声、鼓、贝斯和其他声音",
+        "示意波形：▂ ▅ ▃ ▆ ▁ ▅"
+      ]
+    },
+    {
+      "id": "demucs",
+      "x": 485,
+      "y": 198,
+      "w": 160,
+      "h": 134,
+      "title": "Demucs",
+      "shape": "hub",
+      "color": "blue",
+      "sub": "估计各个声部"
+    },
+    {
+      "id": "stems",
+      "x": 800,
+      "y": 207,
+      "w": 420,
+      "h": 112,
+      "title": "四条独立的估计轨道",
+      "shape": "worker",
+      "color": "green",
+      "text": "vocals  /  drums  /  bass  /  other",
+      "lines": [
+        "人声 / 鼓 / 贝斯 / 其他 · 四条并列输出"
+      ]
+    },
+    {
+      "id": "prepare",
+      "x": 40,
+      "y": 505,
+      "w": 180,
+      "h": 112,
+      "title": "准备音频",
+      "shape": "event",
+      "color": "blue",
+      "sub": "解码与重采样",
+      "lines": [
+        "对齐采样率 / 声道"
+      ],
+      "icon": "code"
+    },
+    {
+      "id": "time-encoder",
+      "x": 300,
+      "y": 474,
+      "w": 220,
+      "h": 82,
+      "title": "时域编码器",
+      "shape": "router",
+      "color": "blue",
+      "sub": "从波形提取特征"
+    },
+    {
+      "id": "freq-encoder",
+      "x": 300,
+      "y": 594,
+      "w": 220,
+      "h": 82,
+      "title": "频域编码器",
+      "shape": "store",
+      "color": "purple",
+      "sub": "从 STFT 频谱提取特征"
+    },
+    {
+      "id": "cross-transformer",
+      "x": 620,
+      "y": 505,
+      "w": 260,
+      "h": 120,
+      "title": "跨域 Transformer",
+      "shape": "router",
+      "color": "blue",
+      "sub": "域内注意力 + 跨域交互",
+      "lines": [
+        "联合处理两种表示"
+      ]
+    },
+    {
+      "id": "reconstruct",
+      "x": 990,
+      "y": 500,
+      "w": 240,
+      "h": 128,
+      "title": "双域解码与重建",
+      "shape": "worker",
+      "color": "green",
+      "sub": "还原各声部的波形",
+      "lines": [
+        "频域重建与时域分支融合"
+      ]
+    },
+    {
+      "id": "whole-track",
+      "x": 40,
+      "y": 843,
+      "w": 140,
+      "h": 50,
+      "title": "整首歌曲",
+      "shape": "event",
+      "color": "blue"
+    },
+    {
+      "id": "chunks",
+      "x": 260,
+      "y": 843,
+      "w": 320,
+      "h": 54,
+      "title": "片段 1 / 2 / 3 …",
+      "shape": "stack",
+      "color": "blue"
+    },
+    {
+      "id": "joined",
+      "x": 260,
+      "y": 943,
+      "w": 320,
+      "h": 54,
+      "title": "重叠加权 → 连续声部",
+      "shape": "router",
+      "color": "blue"
+    },
+    {
+      "id": "all-stems",
+      "x": 680,
+      "y": 842,
+      "w": 220,
+      "h": 100,
+      "title": "先完整分离",
+      "shape": "router",
+      "color": "blue",
+      "lines": [
+        "人声 / 鼓 / 贝斯 / 其他"
+      ]
+    },
+    {
+      "id": "vocals",
+      "x": 990,
+      "y": 825,
+      "w": 240,
+      "h": 74,
+      "title": "人声轨",
+      "shape": "worker",
+      "color": "green",
+      "sub": "vocals"
+    },
+    {
+      "id": "accompaniment",
+      "x": 990,
+      "y": 935,
+      "w": 240,
+      "h": 74,
+      "title": "伴奏轨",
+      "shape": "worker",
+      "color": "green",
+      "sub": "其余声部组合"
+    },
+    {
+      "id": "quality",
+      "x": 40,
+      "y": 1130,
+      "w": 560,
+      "h": 54,
+      "title": "分离可能残留串音或产生伪影",
+      "shape": "callout",
+      "color": "amber"
+    },
+    {
+      "id": "simulation",
+      "x": 680,
+      "y": 1130,
+      "w": 560,
+      "h": 54,
+      "title": "本图演示处理机制，未实际运行音频分离",
+      "shape": "event",
+      "color": "blue"
+    }
+  ],
+  "edges": [
+    {
+      "from": "mix.r",
+      "to": "demucs.l",
+      "label": "送入模型",
+      "flow": "audio",
+      "log": false
+    },
+    {
+      "from": "demucs.r",
+      "to": "stems.l",
+      "label": "估计声部",
+      "flow": "audio",
+      "log": false
+    },
+    {
+      "from": "prepare.r",
+      "to": "time-encoder.l",
+      "label": "",
+      "flow": "audio",
+      "log": false
+    },
+    {
+      "from": "prepare.r",
+      "to": "freq-encoder.l",
+      "label": "",
+      "flow": "audio",
+      "log": false
+    },
+    {
+      "from": "time-encoder.r",
+      "to": "cross-transformer.l@0.25",
+      "label": "",
+      "flow": "audio",
+      "log": false
+    },
+    {
+      "from": "freq-encoder.r",
+      "to": "cross-transformer.l@0.75",
+      "label": "",
+      "flow": "audio",
+      "log": false
+    },
+    {
+      "from": "cross-transformer.r",
+      "to": "reconstruct.l",
+      "label": "解码",
+      "flow": "audio",
+      "log": false,
+      "labelPos": [
+        930,
+        549
+      ]
+    },
+    {
+      "from": "whole-track.r",
+      "to": "chunks.l",
+      "label": "切片",
+      "flow": "audio",
+      "log": false,
+      "labelPos": [
+        220,
+        855
+      ]
+    },
+    {
+      "from": "chunks.b",
+      "to": "joined.t",
+      "label": "片段推理",
+      "flow": "audio",
+      "log": false,
+      "labelPos": [
+        490,
+        923
+      ]
+    },
+    {
+      "from": "all-stems.r",
+      "to": "vocals.l",
+      "label": "保留人声",
+      "flow": "audio",
+      "log": false,
+      "labelPos": [
+        945,
+        853
+      ]
+    },
+    {
+      "from": "all-stems.b",
+      "to": "accompaniment.l",
+      "label": "组合其余声部",
+      "flow": "merge",
+      "log": false,
+      "via": [
+        [
+          790,
+          975
+        ]
+      ],
+      "labelPos": [
+        930,
+        960
+      ]
+    }
+  ],
+  "notes": [
+    {
+      "id": "overview-caption",
+      "x": 40,
+      "y": 343,
+      "w": 1200,
+      "text": "这些是分离模型的估计结果，不等同于录音棚里的原始分轨。",
+      "dim": false,
+      "align": "left"
+    },
+    {
+      "id": "hybrid-caption",
+      "x": 40,
+      "y": 704,
+      "w": 1200,
+      "text": "图中省略了卷积层数、跳跃连接和张量维度，突出 Hybrid Transformer Demucs 的双域路径。",
+      "dim": false,
+      "align": "left"
+    },
+    {
+      "id": "overlap-note",
+      "x": 40,
+      "y": 931,
+      "w": 180,
+      "text": "相邻片段有重叠，\n边缘以权重融合。",
+      "dim": false,
+      "align": "left"
+    },
+    {
+      "id": "segments-caption",
+      "x": 40,
+      "y": 1010,
+      "w": 550,
+      "text": "机制来自 apply_model：累加各片段，再按总权重归一化。",
+      "dim": false,
+      "align": "left"
+    },
+    {
+      "id": "karaoke-caption",
+      "x": 680,
+      "y": 978,
+      "w": 275,
+      "text": "--two-stems=vocals\n改变输出组合，不省去完整分离。",
+      "dim": false,
+      "align": "left"
+    },
+    {
+      "id": "sources",
+      "x": 24,
+      "y": 1234,
+      "w": 1232,
+      "text": "依据：Demucs 官方 README 与 htdemucs.py、apply.py、separate.py；固定提交 e976d93。",
+      "dim": false,
+      "align": "left"
+    },
+    {
+      "id": "boundary",
+      "x": 24,
+      "y": 1261,
+      "w": 1232,
+      "text": "波形、分段和光点均为教学示意；未使用真实歌曲、未展示实测音质，也不代表任何具体产品的实现。",
+      "dim": false,
+      "align": "left"
+    }
+  ]
+}
