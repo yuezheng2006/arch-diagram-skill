@@ -2,6 +2,7 @@
 // draws orthogonal wires, then self-checks the layout (?check writes results to #__diag).
 (function () {
   const S = JSON.parse(document.getElementById('spec').textContent);
+  if (S.kind === 'sequence') document.documentElement.classList.add('sequence');
   if (S.layout === 'explainer') document.documentElement.classList.add('explainer');
   if (S.presentation === true) document.documentElement.classList.add('presentation');
   const THEMES = JSON.parse(document.getElementById('themes').textContent);
@@ -112,6 +113,8 @@
     used.map(s => `<span class="st stl ${s}">${esc(LABEL[s])}</span>`).join(''));
   if (!hasFlows && S.wireLegend !== false) lineLg.push(`<span class="dim">${T.wires}</span>`);
   if (lineLg.length) lgLine('', lineLg.join('&nbsp;&nbsp;&nbsp;'));
+
+  if (S.dependencyConvention === 'dependent-to-prerequisite') lgLine('', String(S.lang || 'zh').startsWith('zh') ? '依赖约定：依赖方 → 被依赖方；间接依赖必须给出完整证据路径。' : 'Dependency convention: dependent → prerequisite; indirect edges require an explicit evidence path.');
 
   // ---------- groups (drawn first, underneath) ----------
   for (const g of S.groups || []) {
@@ -266,14 +269,16 @@
   // ---------- wires ----------
   const defs = document.createElementNS(NS, 'defs');
   const markers = new Set();
-  function marker(k) {
-    if (markers.has(k)) return; markers.add(k);
+  function marker(k, style = 'filled') {
+    const key = k + (style === 'open' ? '-open' : '');
+    if (markers.has(key)) return; markers.add(key);
     const m = document.createElementNS(NS, 'marker');
-    m.setAttribute('id', 'a-' + k); m.setAttribute('viewBox', '0 0 10 10');
+    m.setAttribute('id', 'a-' + key); m.setAttribute('viewBox', '0 0 10 10');
     m.setAttribute('refX', 9); m.setAttribute('refY', 5);
     m.setAttribute('markerWidth', 7); m.setAttribute('markerHeight', 7); m.setAttribute('orient', 'auto-start-reverse');
     const p = document.createElementNS(NS, 'path');
-    p.setAttribute('d', 'M0,0 L10,5 L0,10 z'); p.setAttribute('fill', cssv(k));
+    p.setAttribute('d', style === 'open' ? 'M1,1 L9,5 L1,9' : 'M0,0 L10,5 L0,10 z'); p.setAttribute('fill', style === 'open' ? 'none' : cssv(k));
+    if (style === 'open') { p.setAttribute('stroke', cssv(k)); p.setAttribute('stroke-width', 1.7); }
     m.appendChild(p); defs.appendChild(m);
   }
   svg.appendChild(defs);
@@ -346,13 +351,23 @@
     svg.appendChild(c);
   }
   // a small glowing packet travelling along each wire
-  function packet(pts, k) {
+  function packet(pts, k, timeline) {
     let len = 0;
     for (let i = 1; i < pts.length; i++) len += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
     const c = document.createElementNS(NS, 'circle');
     c.setAttribute('r', 2.6); c.setAttribute('fill', cssv(k)); c.style.filter = `drop-shadow(0 0 3px ${cssv(k)})`;
     const m = document.createElementNS(NS, 'animateMotion');
     m.setAttribute('path', 'M' + pts.map(q => q.join(',')).join(' L'));
+    if (timeline) {
+      const {at,duration,period} = timeline, end=at+duration;
+      m.setAttribute('dur', period+'s'); m.setAttribute('begin', '0s'); m.setAttribute('repeatCount', 'indefinite');
+      m.setAttribute('keyTimes', `0;${at/period};${end/period};1`); m.setAttribute('keyPoints','0;0;1;1'); m.setAttribute('calcMode','linear');
+      c.setAttribute('opacity',0);
+      const visible = document.createElementNS(NS,'animate'); visible.setAttribute('attributeName','opacity');
+      visible.setAttribute('values','0;0;1;1;0;0'); visible.setAttribute('keyTimes',`0;${at/period};${(at+.01)/period};${(end-.01)/period};${end/period};1`);
+      visible.setAttribute('dur',period+'s'); visible.setAttribute('repeatCount','indefinite'); visible.setAttribute('calcMode','discrete');
+      c.dataset.messagePacket='true'; c.dataset.at=at; c.appendChild(m); c.appendChild(visible); svg.appendChild(c); return {begin:at,dur:period};
+    }
     let dur = Math.max(0.8, len / 110);
     if (LOOP) dur = LOOP / Math.max(1, Math.round(LOOP / dur));
     m.setAttribute('dur', dur.toFixed(4) + 's');
@@ -464,7 +479,7 @@
     let e;
     try { e = resolveMotionEdge(e0, f); } catch (error) { issues.push(`edge#${i}: ${error.message}`); e = { ...f, ...e0 }; }
     if (e0.color == null) e.color = f.color;
-    if (e0.dash == null) e.dash = f.dash;
+    if (e0.dash == null && !e.indirect) e.dash = f.dash;
     const name = e.id || `edge#${i} ${Array.isArray(e.from) ? 'pt' : e.from}→${Array.isArray(e.to) ? 'pt' : e.to}`;
     let a = anchor(e.from, centerOf(e.to), name), z = anchor(e.to, centerOf(e.from), name);
     if (!a || !z) return;
@@ -473,20 +488,24 @@
     const pts = route(a, z, e).map(p => [Math.round(p[0] * 2) / 2, Math.round(p[1] * 2) / 2]);
     const k = col(e.color || 'dim');
     const p = document.createElementNS(NS, 'polyline');
+    if (e.id) p.dataset.edgeId = String(e.id);
+    if (e.meaning) p.dataset.meaning = String(e.meaning);
+    if (e.order) p.dataset.order = String(e.order);
+    if (e.messageType) p.dataset.messageType = e.messageType;
     if (e.relation) p.dataset.relation = RELATION_TYPES.has(e.relation) ? e.relation : 'invalid';
     p.setAttribute('points', pts.map(q => q.join(',')).join(' '));
     p.setAttribute('fill', 'none'); p.setAttribute('stroke', cssv(k)); p.setAttribute('stroke-width', 1.4);
-    if (e.dash) { p.setAttribute('stroke-dasharray', '5 4'); if (!STILL && e.relation !== 'association') p.classList.add('flow'); }
-    if (e.arrow !== false) { marker(k); p.setAttribute('marker-end', `url(#a-${k})`); }
+    if (e.dash) { p.setAttribute('stroke-dasharray', '5 4'); if (!STILL && e.relation !== 'association' && e.meaning !== 'dependency' && !e.timeline) p.classList.add('flow'); }
+    if (e.arrow !== false) { marker(k, e.arrowStyle); p.setAttribute('marker-end', `url(#a-${k}${e.arrowStyle === 'open' ? '-open' : ''})`); }
     if (e.arrow === 'both') p.setAttribute('marker-start', `url(#a-${k})`);
     svg.appendChild(p);
-    const timing = !STILL && e.packet !== false ? packet(pts, k) : null;
+    const timing = !STILL && e.packet !== false ? packet(pts, k, e.timeline) : null;
     if (timing && e.arrow === 'both') packet([...pts].reverse(), k);
     if (LIVE) liveEntry(e, k, timing);
     if (e.joint && pts.length > 2) dot(pts[pts.length - 2][0], pts[pts.length - 2][1], k, e.joint === 'hollow');
     if (e.startDot) dot(pts[0][0], pts[0][1], k, e.startDot === 'hollow');
     if (e.label) label(pts, e, k, name);
-    for (let j = 1; j < pts.length; j++) segs.push({ name, a: pts[j - 1], b: pts[j], skip: [a.box, z.box] });
+    for (let j = 1; j < pts.length; j++) segs.push({ name, a: pts[j - 1], b: pts[j], skip: [a.box, z.box], lifeline: e.lifeline === true });
   });
   for (const d of S.dots || []) {
     const c = Array.isArray(d.at) ? { x: d.at[0], y: d.at[1] } : anchor(d.at, null, 'dot');
@@ -536,7 +555,7 @@
     if (lr.l < -1 || lr.r > W + 1) issues.push(`${name}: label "${t.textContent}" leaves the canvas`);
     const hits = new Set();
     for (const s of segs) {
-      if (s.name === name) continue;
+      if (s.name === name || s.lifeline) continue;
       const sl = Math.min(s.a[0], s.b[0]), sr = Math.max(s.a[0], s.b[0]), st = Math.min(s.a[1], s.b[1]), sb = Math.max(s.a[1], s.b[1]);
       if (sr > lr.l + 1 && sl < lr.r - 1 && sb > lr.t + 1 && st < lr.b - 1) hits.add(s.name);
     }
@@ -545,6 +564,7 @@
   let crossings = 0;
   for (let i = 0; i < segs.length; i++) for (let j = i + 1; j < segs.length; j++) {
     const s = segs[i], u = segs[j];
+    if (s.lifeline || u.lifeline) continue;
     if (s.name === u.name) continue;
     const sh = Math.abs(s.a[1] - s.b[1]) < .5, uh = Math.abs(u.a[1] - u.b[1]) < .5;
     if (sh === uh) continue;

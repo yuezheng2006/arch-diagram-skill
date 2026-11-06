@@ -178,3 +178,10 @@ body { background: var(--page); min-height: 100vh; }
 .theme-control select { font: inherit; min-height: 36px; max-width: 150px; background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 7px; padding: 6px 10px; }
 .theme-control select:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
 .box { border-radius: var(--radius, 10px); }
+
+/* Sequence mode uses a temporal axis, not a freeform relationship layout. */
+.sequence #head { top: 20px; text-align: left; padding: 0 24px; }
+.sequence #head .t { font-size: 28px; line-height: 1.4; }
+.sequence #head > .dim { font-size: 14px; margin-top: 8px; }
+.sequence .lbl { paint-order: stroke; stroke: var(--bg); stroke-width: 5px; stroke-linejoin: round; font-size: 13px; }
+.sequence .note { font-size: 12px; }

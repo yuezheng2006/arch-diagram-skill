@@ -8,6 +8,18 @@
 
 [交互示例](docs/reading-club.html) · [12 秒视频](docs/reading-club.mp4) · [可编辑规格](skills/motion-map/examples/reading-club.json)
 
+## 把方向、时序和间接依赖说清楚
+
+- **时序图**：以参与者和有序消息建模，区分调用、异步发送、响应与自调用。响应必须通过 `replyTo` 对应到先前请求，发送方/接收方要反向匹配；线性模型中同步调用未返回，发送方不能继续发新消息。动画按消息顺序播放，Mermaid 导出为 `sequenceDiagram`。
+- **依赖图**：显式声明“依赖方 → 被依赖方”。间接 A→C 必须有可校验的 A→B→C 直接依赖路径；关联、协作和推测边不能充当证据。结构依赖保持静态。
+- **关系图**：单向、双向和无方向各有不同含义。请求和响应不能合并成一条无先后的双向关联；跨图比较时应先读箭头约定。
+
+[下单时序预览](docs/order-sequence.png) · [动态时序 HTML](docs/order-sequence.html) · [16 秒完整循环视频](docs/order-sequence.mp4) · [原生 Mermaid](docs/order-sequence.mmd)
+
+[直接/间接依赖预览](docs/dependency-paths.png) · [交互 HTML](docs/dependency-paths.html) · [可编辑规格](skills/motion-map/examples/dependency-paths.json)
+
+当前时序模式支持线性消息序列；并行/条件片段、激活条及实测时间轴尚未实现，不会把异步消息解释成已证明的并行。路径校验检查的是规格内部证据链，事实仍需来源。
+
 ## 不同关系，不同表达
 
 | 关系 | Spec 字段 | 图与动画 |

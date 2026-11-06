@@ -7,7 +7,7 @@
     {
       "name": "motion-map",
       "source": "./",
-      "version": "2.0.0",
+      "version": "2.1.0",
       "description": "Animated relationship maps, architecture diagrams and illustrated explainers."
     }
   ]

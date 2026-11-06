@@ -5,6 +5,8 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { RELATION_TYPES } from './relations.mjs';
+import { validateDependencies } from './semantics.mjs';
+import { compileSequence } from './sequence.mjs';
 
 const [specPath, outPath, ...args] = process.argv.slice(2);
 const themes = JSON.parse(readFileSync(join(dirname(fileURLToPath(import.meta.url)), '..', 'assets', 'themes.json'), 'utf8'));
@@ -30,13 +32,20 @@ if (themeOverride) spec.theme = themeOverride;
 if (spec.layout === 'explainer' && !spec.theme) spec.theme = 'sketch';
 if (spec.theme && !Object.hasOwn(themes, spec.theme)) { console.error('unknown theme: ' + spec.theme); process.exit(2); }
 
+try { spec = compileSequence(spec); } catch (e) { console.error(e.message); process.exit(1); }
+
 // cheap structural checks; layout problems are caught later by check.mjs
 const errs = [];
 for (const item of [...(spec.flows || []), ...(spec.edges || [])]) {
   if (item.relation != null && !RELATION_TYPES.has(item.relation)) errs.push('unknown relation: ' + String(item.relation));
 }
+if (!errs.length) errs.push(...validateDependencies(spec));
+const flowIds = new Set();
+for (const f of spec.flows || []) { if (typeof f.id !== 'string' || !f.id || flowIds.has(f.id)) errs.push('flow ids must be nonempty and unique'); flowIds.add(f.id); }
+for (const e of spec.edges || []) if (e.flow && !flowIds.has(e.flow)) errs.push('unknown flow: ' + e.flow);
+const reserved = new Set(['spec','themes','wires','head','stage','fit','log','__diag']);
 const ids = new Set();
-const seen = id => { if (ids.has(id)) errs.push(`duplicate id "${id}"`); ids.add(id); };
+const seen = id => { if (reserved.has(id)) errs.push('reserved diagram id: ' + id); if (ids.has(id)) errs.push(`duplicate id "${id}"`); ids.add(id); };
 for (const n of spec.nodes || []) {
   if (!n.id) errs.push(`node without id: ${JSON.stringify(n).slice(0, 60)}`); else seen(n.id);
   if (n.x == null || n.y == null || n.w == null) errs.push(`node "${n.id}" needs x, y and w`);

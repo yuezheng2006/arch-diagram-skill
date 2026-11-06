@@ -1,0 +1,41 @@
+{
+  "kind": "relations",
+  "layout": "explainer",
+  "theme": "sketch",
+  "width": 1280,
+  "title": "箭头不反过来，间接也有据可查",
+  "subtitle": "自拟教学场景 · 上半部分是依赖，下面两块是关联；不同语义不参与同一种推导。",
+  "dependencyConvention": "dependent-to-prerequisite",
+  "flows": [
+    {"id": "depends", "label": "直接依赖", "color": "blue", "relation": "directed", "meaning": "dependency"},
+    {"id": "collaborate", "label": "双向协作", "color": "green", "relation": "bidirectional"},
+    {"id": "belongs", "label": "普通关联", "color": "purple", "relation": "association", "dash": true}
+  ],
+  "groups": [
+    {"id": "dependency-panel", "x": 16, "y": 190, "w": 1248, "h": 330, "step": "1", "label": "直接依赖 A → B → C，才能展示 A 对 C 的间接依赖", "color": "faint", "solid": true},
+    {"id": "collaboration-panel", "x": 16, "y": 550, "w": 608, "h": 240, "step": "2", "label": "双向协作不是一条请求响应时序", "color": "faint", "solid": true},
+    {"id": "association-panel", "x": 656, "y": 550, "w": 608, "h": 240, "step": "3", "label": "普通关联不用于推导依赖", "color": "faint", "solid": true}
+  ],
+  "nodes": [
+    {"id": "app", "x": 60, "y": 280, "w": 260, "h": 90, "title": "A · 应用", "sub": "依赖方", "shape": "event", "color": "blue"},
+    {"id": "api", "x": 510, "y": 280, "w": 260, "h": 90, "title": "B · 接口层", "sub": "A 的直接依赖", "shape": "router", "color": "blue"},
+    {"id": "database", "x": 960, "y": 280, "w": 260, "h": 90, "title": "C · 数据库", "sub": "B 的直接依赖", "shape": "store", "color": "purple"},
+    {"id": "author", "x": 40, "y": 630, "w": 210, "h": 70, "title": "作者", "shape": "event", "color": "green"},
+    {"id": "reviewer", "x": 370, "y": 630, "w": 210, "h": 70, "title": "评审者", "shape": "worker", "color": "green"},
+    {"id": "reader", "x": 680, "y": 630, "w": 210, "h": 70, "title": "读者", "shape": "event", "color": "purple"},
+    {"id": "community", "x": 1010, "y": 630, "w": 210, "h": 70, "title": "社区", "shape": "event", "color": "purple"}
+  ],
+  "edges": [
+    {"id": "ab", "from": "app.r", "to": "api.l", "flow": "depends", "label": "直接依赖"},
+    {"id": "bc", "from": "api.r", "to": "database.l", "flow": "depends", "label": "直接依赖"},
+    {"id": "ac", "from": "app.b", "to": "database.b", "flow": "depends", "label": "间接依赖：A → B → C", "indirect": true, "viaPath": ["app", "api", "database"], "via": [[190, 440], [1090, 440]]},
+    {"from": "author.r", "to": "reviewer.l", "flow": "collaborate", "label": "讨论 / 反馈"},
+    {"from": "reader.r", "to": "community.l", "flow": "belongs", "label": "成员关系"}
+  ],
+  "notes": [
+    {"x": 40, "y": 475, "w": 1190, "text": "虚线表示有显式路径支撑的间接依赖。依赖是结构关系，默认不产生流动光点，也不等同于运行时调用。", "align": "left"},
+    {"x": 40, "y": 735, "w": 550, "text": "共同工作可用双箭头；先调用再返回，应另画有序消息。", "align": "left"},
+    {"x": 680, "y": 735, "w": 550, "text": "无方向、无运动；关联和协作都不是依赖证据。", "align": "left"},
+    {"x": 24, "y": 825, "w": 1232, "text": "路径校验仅验证规格内的直接依赖链；事实本身仍需来源支持。推测边不能用来证明间接依赖。", "align": "left"}
+  ]
+}

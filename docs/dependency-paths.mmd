@@ -1,0 +1,29 @@
+flowchart LR
+  %% 箭头不反过来，间接也有据可查
+  subgraph dependency_panel["直接依赖 A → B → C，才能展示 A 对 C 的间接依赖"]
+    app["<b>A · 应用</b><br/>依赖方"]:::none
+    api["<b>B · 接口层</b><br/>A 的直接依赖"]:::none
+    database["<b>C · 数据库</b><br/>B 的直接依赖"]:::none
+  end
+  subgraph collaboration_panel["双向协作不是一条请求响应时序"]
+    author["<b>作者</b>"]:::none
+    reviewer["<b>评审者</b>"]:::none
+  end
+  subgraph association_panel["普通关联不用于推导依赖"]
+    reader["<b>读者</b>"]:::none
+    community["<b>社区</b>"]:::none
+  end
+  app -->|"直接依赖"| api
+  api -->|"直接依赖"| database
+  app -.->|"间接依赖：A → B → C"| database
+  author <-->|"讨论 / 反馈"| reviewer
+  reader -.-|"成员关系"| community
+  linkStyle 0 stroke:#075bb8,stroke-width:1.5px
+  linkStyle 1 stroke:#075bb8,stroke-width:1.5px
+  linkStyle 2 stroke:#075bb8,stroke-width:1.5px
+  linkStyle 3 stroke:#137137,stroke-width:1.5px
+  linkStyle 4 stroke:#6f39bc,stroke-width:1.5px
+  classDef none fill:#ffffff,stroke:#90a2b6,color:#1f2830
+  style dependency_panel fill:transparent,stroke:#90a2b6,stroke-dasharray:0,color:#90a2b6
+  style collaboration_panel fill:transparent,stroke:#90a2b6,stroke-dasharray:0,color:#90a2b6
+  style association_panel fill:transparent,stroke:#90a2b6,stroke-dasharray:0,color:#90a2b6

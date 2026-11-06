@@ -1,0 +1,24 @@
+{
+  "kind": "sequence",
+  "lang": "zh-CN",
+  "theme": "porcelain",
+  "title": "一次下单：谁先发起，谁再响应？",
+  "subtitle": "自拟教学场景 · 调用、响应和异步发送分别建模；同一对参与者也可能有多条不同时刻的消息。",
+  "sequence": {
+    "participants": [
+      {"id": "user", "label": "用户"},
+      {"id": "web", "label": "页面"},
+      {"id": "api", "label": "订单 API"},
+      {"id": "queue", "label": "事件队列"}
+    ],
+    "messages": [
+      {"id": "submit", "from": "user", "to": "web", "type": "call", "label": "提交订单"},
+      {"id": "create", "from": "web", "to": "api", "type": "call", "label": "创建订单"},
+      {"id": "check", "from": "api", "to": "api", "type": "call", "label": "校验订单"},
+      {"id": "checked", "from": "api", "to": "api", "type": "return", "replyTo": "check", "label": "校验通过"},
+      {"id": "publish", "from": "api", "to": "queue", "type": "async", "label": "发布 OrderCreated 事件"},
+      {"id": "created", "from": "api", "to": "web", "type": "return", "replyTo": "create", "label": "返回订单编号"},
+      {"id": "shown", "from": "web", "to": "user", "type": "return", "replyTo": "submit", "label": "显示提交结果"}
+    ]
+  }
+}

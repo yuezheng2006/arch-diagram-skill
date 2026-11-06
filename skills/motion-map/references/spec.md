@@ -128,3 +128,11 @@ Groups are panel backgrounds; wires render above them, while cards and annotatio
 Set `kind: "relations"` to label the legend as relationships. `flows[].relation` or `edges[].relation` accepts `directed`, `bidirectional`, `association`. An edge overrides the flow's relation. Explicit relation semantics override contradictory `arrow` and, for association, `packet` flags. With no relation set, legacy fields still work.
 
 Association has no arrowheads, packets, moving dashed strokes or arrival logs. Bidirectional has two arrowheads and two packet streams unless `packet: false`. Directed has a forward arrow. The Mermaid export uses `---`/`-.-`, `<-->`/`<-.->`, or `-->`/`-.->` respectively. Unknown relation names fail before the output file is written. See [relationships.md](relationships.md).
+
+## Sequence mode
+
+`kind: "sequence"` takes `sequence.participants` and `sequence.messages`; nodes/edges and message timing are compiled, not supplied manually. Message types: `call`, `async`, `return`; return `replyTo` must refer to a prior unanswered request with reversed endpoints. Participant/message IDs are unique identifiers. See [sequence.md](sequence.md).
+
+## Structural dependency semantics
+
+`meaning: "dependency"` on edge/flow requires `dependencyConvention: "dependent-to-prerequisite"`, a directed arrow and named distinct endpoints. Dependency arrows stay static. `indirect: true` forces dashes and requires `viaPath: [sourceId, intermediateId, targetId]`, supported by direct dependency edges at every hop; inferred links are excluded. `viaPath` is evidence, while `via` remains a coordinate routing field. See [relationships.md](relationships.md). Duplicate/unknown flow IDs and reserved renderer entity IDs are rejected before writing output.

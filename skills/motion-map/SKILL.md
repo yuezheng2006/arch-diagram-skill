@@ -19,6 +19,13 @@ Extract an entity list and a relationship list from supplied sources. Give each 
 - For reading repositories/articles and detailed architecture layout/export procedures, read [architecture-workflow.md](references/architecture-workflow.md).
 - Read [spec.md](references/spec.md) before writing JSON. It defines nodes, anchors, paths, groups and format limitations.
 
+## Sequence and dependency precision
+
+- If the question is who sends what when, read [sequence.md](references/sequence.md) and use `kind: "sequence"`. Preserve ordered messages and correlate responses with `replyTo`; do not collapse request/response into one bidirectional line. Self-calls and asynchronous sends are distinct types. Sequence arrows point sender → recipient, independently of the dependency convention.
+- For dependencies, read the dependency section of [relationships.md](references/relationships.md). Set `meaning: "dependency"` and `dependencyConvention: "dependent-to-prerequisite"`. A→B means A needs B, not that B calls A. Keep structural dependency edges static.
+- An indirect dependency needs a `viaPath` supported by the explicitly drawn direct dependencies. Association and inferred links are not proof. Explain the path and mark the shortcut dashed. Do not infer causality from reachability alone.
+- State direction conventions in the diagram. Validate participant IDs, order, response endpoints and evidence paths before polishing layout. The compiler checks graph consistency; source accuracy remains the author's responsibility.
+
 ## 2. Model the relationships
 
 Set `kind: "relations"` for a general relationship map; this changes the legend's wording from flows to relationships. Declare reusable types in `flows`, then reference them from edges.

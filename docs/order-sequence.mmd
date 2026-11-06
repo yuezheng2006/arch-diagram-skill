@@ -1,0 +1,13 @@
+sequenceDiagram
+  autonumber
+  participant p0 as 用户
+  participant p1 as 页面
+  participant p2 as 订单 API
+  participant p3 as 事件队列
+  p0->>p1: 提交订单
+  p1->>p2: 创建订单
+  p2->>p2: 校验订单
+  p2-->>p2: 校验通过
+  p2-)p3: 发布 OrderCreated 事件
+  p2-->>p1: 返回订单编号
+  p1-->>p0: 显示提交结果

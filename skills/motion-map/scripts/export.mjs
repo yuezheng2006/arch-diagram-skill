@@ -7,6 +7,7 @@
 //   .mmd / .md  Mermaid flowchart: editable, renders in GitHub / Notion / Typora / Feishu (.md wraps it in a fence)
 import { spawn, spawnSync, execFileSync } from 'node:child_process';
 import { mkdtempSync, rmSync, writeFileSync, readFileSync } from 'node:fs';
+import { sequenceMermaid } from './sequence.mjs';
 import { resolveMotionEdge } from './relations.mjs';
 import { tmpdir } from 'node:os';
 import { join, resolve, extname } from 'node:path';
@@ -28,7 +29,7 @@ const themes = embedded ? JSON.parse(embedded[1]) : { paper: { tokens: { blue:'#
 const theme = themeOverride || readSpec(htmlPath).theme || 'paper';
 if ((ti >= 0 && !themeOverride) || !Object.hasOwn(themes, theme)) { console.error('unknown or missing theme: ' + themeOverride); process.exit(2); }
 const diagramUrl = query => fileUrl(htmlPath) + '?' + query + '&theme=' + encodeURIComponent(theme);
-const LOOP = 4;   // must match the .loop periods in style.css
+const LOOP = readSpec(htmlPath).kind === 'sequence' ? readSpec(htmlPath).sequence.period : 4;   // must match the .loop periods in style.css
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 let chrome, diag;
@@ -140,6 +141,11 @@ async function capture(W, H, seconds) {
 // ---------- Mermaid ----------
 function mermaid(out, fenced) {
   const S = readSpec(htmlPath);
+  if (S.kind === 'sequence') {
+    const body = sequenceMermaid(S);
+    writeFileSync(out, fenced ? '# ' + String(S.title || 'Sequence').replace(/[\r\n]/g, ' ') + '\n\n```mermaid\n' + body + '```\n' : body);
+    console.log('✓ ' + out + ' (sequenceDiagram, ' + S.sequence.messages.length + ' messages)'); return;
+  }
   const HEX = themes[theme].tokens;
   const SHORT = { bl: 'blue', cy: 'cyan', gr: 'green', am: 'amber', pu: 'purple', rd: 'red', or: 'orange' };
   const hex = c => HEX[SHORT[c] || c] || HEX.faint;
