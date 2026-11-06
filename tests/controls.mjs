@@ -2,7 +2,7 @@
 import { mkdtempSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
-import { findChrome, runChrome, fileUrl } from '../skills/arch-diagram/scripts/lib.mjs';
+import { findChrome, runChrome, fileUrl } from '../skills/motion-map/scripts/lib.mjs';
 const dir = mkdtempSync(join(tmpdir(), 'atelier-controls-'));
 try {
   const script = `<script>

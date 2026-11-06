@@ -9,9 +9,9 @@ import { mkdtempSync, readdirSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { findChrome, runChrome, fileUrl, readDiag } from '../skills/arch-diagram/scripts/lib.mjs';
+import { findChrome, runChrome, fileUrl, readDiag } from '../skills/motion-map/scripts/lib.mjs';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', 'skills', 'arch-diagram');
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', 'skills', 'motion-map');
 const BUILD = join(ROOT, 'scripts', 'build.mjs');
 const tmp = mkdtempSync(join(tmpdir(), 'arch-diagram-test-'));
 const chrome = findChrome();

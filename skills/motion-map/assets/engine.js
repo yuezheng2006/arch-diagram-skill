@@ -1,4 +1,4 @@
-// arch-diagram engine: renders the JSON spec in #spec into a terminal-blueprint diagram,
+// motion-map engine: renders the JSON spec in #spec into a terminal-blueprint diagram,
 // draws orthogonal wires, then self-checks the layout (?check writes results to #__diag).
 (function () {
   const S = JSON.parse(document.getElementById('spec').textContent);
@@ -103,7 +103,7 @@
       `<span class="lg"><span class="sq" style="background:var(--${col(l.color)})"></span>${fmt(l.label)}</span>`).join(''));
   }
   if (hasFlows) {
-    lgLine(T.flows, S.flows.map(f =>
+    lgLine(S.kind === 'relations' ? (String(S.lang || 'zh').startsWith('zh') ? '关系：' : 'Relations: ') : T.flows, S.flows.map(f =>
       `<span class="lg"><svg width="28" height="8" style="vertical-align:1px;margin-right:6px"><line x1="0" y1="4" x2="28" y2="4" stroke="var(--${col(f.color)})" stroke-width="1.6"${f.dash ? ' stroke-dasharray="5 4"' : ''}/></svg>${fmt(f.label)}</span>`).join(''));
   }
   const used = ['ok', 'warn', 'dev', 'off', 'none', 'done'].filter(s => (S.nodes || []).some(n => n.status === s));
@@ -461,7 +461,8 @@
   (S.edges || []).forEach((e0, i) => {
     const f = FLOW[e0.flow] || {};
     if (e0.flow && !FLOW[e0.flow]) issues.push(`edge#${i}: unknown flow "${e0.flow}"`);
-    const e = Object.assign({ color: f.color, dash: f.dash }, e0);
+    let e;
+    try { e = resolveMotionEdge(e0, f); } catch (error) { issues.push(`edge#${i}: ${error.message}`); e = { ...f, ...e0 }; }
     if (e0.color == null) e.color = f.color;
     if (e0.dash == null) e.dash = f.dash;
     const name = e.id || `edge#${i} ${Array.isArray(e.from) ? 'pt' : e.from}→${Array.isArray(e.to) ? 'pt' : e.to}`;
@@ -472,13 +473,15 @@
     const pts = route(a, z, e).map(p => [Math.round(p[0] * 2) / 2, Math.round(p[1] * 2) / 2]);
     const k = col(e.color || 'dim');
     const p = document.createElementNS(NS, 'polyline');
+    if (e.relation) p.dataset.relation = RELATION_TYPES.has(e.relation) ? e.relation : 'invalid';
     p.setAttribute('points', pts.map(q => q.join(',')).join(' '));
     p.setAttribute('fill', 'none'); p.setAttribute('stroke', cssv(k)); p.setAttribute('stroke-width', 1.4);
-    if (e.dash) { p.setAttribute('stroke-dasharray', '5 4'); if (!STILL) p.classList.add('flow'); }
+    if (e.dash) { p.setAttribute('stroke-dasharray', '5 4'); if (!STILL && e.relation !== 'association') p.classList.add('flow'); }
     if (e.arrow !== false) { marker(k); p.setAttribute('marker-end', `url(#a-${k})`); }
     if (e.arrow === 'both') p.setAttribute('marker-start', `url(#a-${k})`);
     svg.appendChild(p);
     const timing = !STILL && e.packet !== false ? packet(pts, k) : null;
+    if (timing && e.arrow === 'both') packet([...pts].reverse(), k);
     if (LIVE) liveEntry(e, k, timing);
     if (e.joint && pts.length > 2) dot(pts[pts.length - 2][0], pts[pts.length - 2][1], k, e.joint === 'hollow');
     if (e.startDot) dot(pts[0][0], pts[0][1], k, e.startDot === 'hollow');
@@ -556,7 +559,7 @@
   const pre = el('pre', null, null, document.body);
   pre.id = '__diag'; pre.hidden = true;
   pre.textContent = JSON.stringify({ width: W, height: H, issues, warnings });
-  if (issues.length) console.warn('[arch-diagram]', issues);
+  if (issues.length) console.warn('[motion-map]', issues);
 
   // ---------- scale to fit narrow screens ----------
   // zoom re-lays out at the smaller size so text stays crisp; transform blurs in narrow windows
@@ -574,7 +577,7 @@
     const bar = el('nav', 'toolbar', null);
     bar.setAttribute('aria-label', zh ? '架构图控制' : 'Diagram controls');
     document.body.insertBefore(bar, fit);
-    el('span', 'brand', 'ARCH / ATELIER', bar);
+    el('span', 'brand', 'MOTION MAP', bar);
     const themeLabel = el('label', 'theme-control', zh ? '主题 ' : 'Theme ', bar);
     const themeSelect = el('select', null, null, themeLabel);
     themeSelect.setAttribute('aria-label', zh ? '选择界面主题' : 'Choose diagram theme');

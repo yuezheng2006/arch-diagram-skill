@@ -1,0 +1,46 @@
+flowchart LR
+  %% Motion Map：让关系被看见
+  subgraph community["场景关系网：同一群人，不同关系可以同时存在"]
+    book["<b>共读书目</b><br/>提供讨论与笔记的内容"]:::none
+    host["<b>主持人</b><br/>组织讨论、协调安排"]:::none
+    members["<b>参与读者</b><br/>阅读、讨论与反馈"]:::none
+    club["<b>周末读书会</b><br/>虚构的教学场景"]:::none
+    notes["<b>共同读书笔记</b><br/>大家整理的内容成果"]:::none
+  end
+  subgraph association_key["关联：相连，但没有流向"]
+    role_a["<b>成员</b>"]:::none
+    role_b["<b>小组</b>"]:::none
+  end
+  subgraph directed_key["单向：从来源指向结果"]
+    input_a["<b>阅读</b>"]:::none
+    output_b["<b>笔记</b>"]:::none
+  end
+  subgraph bidirectional_key["双向：彼此交流与协作"]
+    peer_a["<b>主持人</b>"]:::none
+    peer_b["<b>读者</b>"]:::none
+  end
+  club -.-|"共读对象"| book
+  club -.-|"角色关联"| host
+  club -.-|"成员参与"| members
+  host <-->|"共同讨论与协调"| members
+  book -->|"提供内容"| notes
+  club -->|"共同整理"| notes
+  notes <-->|"阅读与反馈"| members
+  role_a -.-|"隶属"| role_b
+  input_a -->|"形成"| output_b
+  peer_a <-->|"讨论"| peer_b
+  linkStyle 0 stroke:#075bb8,stroke-width:1.5px
+  linkStyle 1 stroke:#075bb8,stroke-width:1.5px
+  linkStyle 2 stroke:#075bb8,stroke-width:1.5px
+  linkStyle 3 stroke:#137137,stroke-width:1.5px
+  linkStyle 4 stroke:#6f39bc,stroke-width:1.5px
+  linkStyle 5 stroke:#6f39bc,stroke-width:1.5px
+  linkStyle 6 stroke:#137137,stroke-width:1.5px
+  linkStyle 7 stroke:#075bb8,stroke-width:1.5px
+  linkStyle 8 stroke:#6f39bc,stroke-width:1.5px
+  linkStyle 9 stroke:#137137,stroke-width:1.5px
+  classDef none fill:#ffffff,stroke:#90a2b6,color:#1f2830
+  style community fill:transparent,stroke:#90a2b6,stroke-dasharray:0,color:#90a2b6
+  style association_key fill:transparent,stroke:#90a2b6,stroke-dasharray:0,color:#90a2b6
+  style directed_key fill:transparent,stroke:#90a2b6,stroke-dasharray:0,color:#90a2b6
+  style bidirectional_key fill:transparent,stroke:#90a2b6,stroke-dasharray:0,color:#90a2b6

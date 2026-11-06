@@ -1,14 +1,14 @@
 {
-  "name": "arch-diagram",
+  "name": "motion-map",
   "owner": {
-    "name": "bassnova42"
+    "name": "yuezheng2006"
   },
   "plugins": [
     {
-      "name": "arch-diagram",
+      "name": "motion-map",
       "source": "./",
-      "version": "1.2.3",
-      "description": "Turn a GitHub repo, article, PDF or local project into an animated terminal-blueprint architecture diagram: HTML, PNG, looping MP4/GIF or Mermaid, with a live trace log."
+      "version": "2.0.0",
+      "description": "Animated relationship maps, architecture diagrams and illustrated explainers."
     }
   ]
 }

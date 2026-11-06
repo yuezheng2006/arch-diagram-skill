@@ -23,10 +23,10 @@
 
 ## 复用与导出
 
-规格文件为 `skills/arch-diagram/examples/music-separation.json`，采用 `layout: "explainer"` 与 `theme: "sketch"`。此例使用一条总览、一个双分支模型图、两个局部机制和一个阅读边界区，没有复用 DSH 示例的六块结构。
+规格文件为 `skills/motion-map/examples/music-separation.json`，采用 `layout: "explainer"` 与 `theme: "sketch"`。此例使用一条总览、一个双分支模型图、两个局部机制和一个阅读边界区，没有复用 DSH 示例的六块结构。
 
 ```bash
-node bin/cli.mjs build skills/arch-diagram/examples/music-separation.json docs/music-separation.html
+node bin/cli.mjs build skills/motion-map/examples/music-separation.json docs/music-separation.html
 node bin/cli.mjs check docs/music-separation.html
 node bin/cli.mjs export docs/music-separation.html music.png music.mp4 --seconds 12 --scale 1
 ```

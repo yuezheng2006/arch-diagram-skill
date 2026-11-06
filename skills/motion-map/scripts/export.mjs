@@ -7,6 +7,7 @@
 //   .mmd / .md  Mermaid flowchart: editable, renders in GitHub / Notion / Typora / Feishu (.md wraps it in a fence)
 import { spawn, spawnSync, execFileSync } from 'node:child_process';
 import { mkdtempSync, rmSync, writeFileSync, readFileSync } from 'node:fs';
+import { resolveMotionEdge } from './relations.mjs';
 import { tmpdir } from 'node:os';
 import { join, resolve, extname } from 'node:path';
 import { findChrome, runChrome, readDiag, readSpec, fileUrl, pageSize } from './lib.mjs';
@@ -196,8 +197,9 @@ function mermaid(out, fenced) {
     const a = endOf(e.from), b = endOf(e.to);
     if (!a || !b || a === b) { dropped++; continue; }
     const f = FLOW[e.flow] || {};
-    const dash = e.dash ?? f.dash, arrow = e.arrow !== false;
-    const op = dash ? (arrow ? '-.->' : '-.-') : (arrow ? '-->' : '---');
+    const resolved = resolveMotionEdge(e, f);
+    const dash = resolved.dash, arrow = resolved.arrow;
+    const op = arrow === 'both' ? (dash ? '<-.->' : '<-->') : dash ? (arrow !== false ? '-.->' : '-.-') : (arrow !== false ? '-->' : '---');
     const lb = e.label ? `|"${q(String(e.label).replace(/\n/g, ' '))}"|` : '';
     L.push(`  ${sid(a)} ${op}${lb} ${sid(b)}`);
     styles.push(`  linkStyle ${k++} stroke:${hex(e.color || f.color || 'dim')},stroke-width:1.5px`);

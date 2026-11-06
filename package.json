@@ -1,13 +1,14 @@
 {
-  "name": "@yuezheng2006/arch-diagram",
-  "version": "1.2.3",
-  "description": "Atelier fork: polished Chinese-ready animated architecture diagrams, offline HTML and multi-format exports",
+  "name": "@yuezheng2006/motion-map",
+  "version": "2.0.0",
+  "description": "Motion Map: animated relationship, architecture and explainer diagrams from sources or structured notes",
   "type": "module",
   "bin": {
+    "motion-map": "bin/cli.mjs",
     "arch-diagram": "bin/cli.mjs"
   },
   "scripts": {
-    "test": "node test/color-injection.mjs"
+    "test": "node test/color-injection.mjs && node tests/relations.mjs && node tests/controls.mjs && node tests/themes.mjs && node tests/explainer.mjs"
   },
   "files": [
     "bin",
@@ -15,7 +16,9 @@
     ".claude-plugin",
     ".codex-plugin",
     "README*.md",
-    "LICENSE"
+    "LICENSE",
+    ".agents",
+    "NOTICE"
   ],
   "engines": {
     "node": ">=18"
@@ -29,17 +32,20 @@
     "diagram",
     "mermaid",
     "openai-codex",
-    "visualization"
+    "visualization",
+    "relationships",
+    "knowledge-map",
+    "dependency-graph"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yuezheng2006/arch-diagram-skill.git"
+    "url": "git+https://github.com/yuezheng2006/motion-map-skill.git"
   },
-  "homepage": "https://github.com/yuezheng2006/arch-diagram-skill#readme",
-  "author": "bassnova42",
+  "homepage": "https://github.com/yuezheng2006/motion-map-skill#readme",
+  "author": "yuezheng2006",
   "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
-  "private": true
+  "private": true,
+  "contributors": [
+    "bassnova42 (upstream arch-diagram-skill)"
+  ]
 }

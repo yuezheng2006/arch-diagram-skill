@@ -3,7 +3,7 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import assert from 'node:assert/strict';
-import { findChrome, runChrome, fileUrl } from '../skills/arch-diagram/scripts/lib.mjs';
+import { findChrome, runChrome, fileUrl } from '../skills/motion-map/scripts/lib.mjs';
 const dir = mkdtempSync(join(tmpdir(), 'atelier-themes-'));
 try {
   const html = readFileSync('docs/dsh-superagent.html', 'utf8');
@@ -43,10 +43,10 @@ try {
   }
   const fallback = runChrome(findChrome(), ['--dump-dom',fileUrl(resolve('docs/dsh-superagent.html'))+'?theme=not-a-theme']);
   assert(fallback.includes('data-theme="paper"'));
-  for (const id of Object.keys(JSON.parse(readFileSync('skills/arch-diagram/assets/themes.json','utf8')))) {
+  for (const id of Object.keys(JSON.parse(readFileSync('skills/motion-map/assets/themes.json','utf8')))) {
     const out = join(dir,id+'.mmd');
     execFileSync(process.execPath,['bin/cli.mjs','export','docs/dsh-superagent.html',out,'--theme',id]);
-    const tokens = JSON.parse(readFileSync('skills/arch-diagram/assets/themes.json','utf8'))[id].tokens;
+    const tokens = JSON.parse(readFileSync('skills/motion-map/assets/themes.json','utf8'))[id].tokens;
     const text = readFileSync(out,'utf8');
     assert(text.includes('fill:'+tokens.panel)); assert(text.includes('stroke:'+tokens.cyan));
   }

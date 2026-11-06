@@ -1,37 +1,38 @@
 {
-  "name": "arch-diagram",
-  "version": "1.2.3",
-  "description": "Turn a GitHub repo, article, PDF or local project into an animated Atelier architecture diagram: HTML, PNG, looping MP4/GIF or Mermaid, with a live trace log.",
+  "name": "motion-map",
+  "version": "2.0.0",
+  "description": "Animated relationship maps, architecture diagrams and illustrated explainers. Offline HTML, PNG, MP4/GIF and Mermaid.",
   "author": {
-    "name": "bassnova42",
-    "url": "https://github.com/bassnova42"
+    "name": "yuezheng2006",
+    "url": "https://github.com/yuezheng2006"
   },
-  "homepage": "https://github.com/yuezheng2006/arch-diagram-skill",
-  "repository": "https://github.com/yuezheng2006/arch-diagram-skill",
+  "homepage": "https://github.com/yuezheng2006/motion-map-skill",
+  "repository": "https://github.com/yuezheng2006/motion-map-skill",
   "license": "MIT",
   "keywords": [
+    "relationships",
     "architecture",
-    "diagram",
+    "knowledge-map",
     "mermaid",
     "video",
     "skill"
   ],
   "skills": "./skills",
   "interface": {
-    "displayName": "Arch Diagram Atelier",
-    "shortDescription": "Animated architecture diagrams from any repo or article",
-    "longDescription": "Reads a GitHub repo, article, PDF or local project and draws a warm ivory Atelier architecture diagram with typed animated wires and a live trace log. Exports HTML, PNG, looping MP4/GIF and Mermaid. The diagram is written in the language of your prompt.",
-    "developerName": "bassnova42",
+    "displayName": "Motion Map · 动态关系图",
+    "shortDescription": "把关系、结构和过程变成可编辑的动态图",
+    "longDescription": "Map entities and their directed, bidirectional or undirected relationships; explain systems and processes with five themes and an illustrated storyboard mode. Export standalone HTML, PNG, MP4/GIF and Mermaid.",
+    "developerName": "yuezheng2006",
     "category": "Developer Tools",
     "capabilities": [
       "Read",
       "Write"
     ],
-    "websiteURL": "https://github.com/yuezheng2006/arch-diagram-skill",
+    "websiteURL": "https://github.com/yuezheng2006/motion-map-skill",
     "defaultPrompt": [
-      "Draw the architecture of this repository.",
-      "Turn this article into a flowchart and export a 20-second video.",
-      "Export the last diagram as a PNG and as Mermaid."
+      "把这些人物和组织的关系画成动态图，并标明每种连线的含义。",
+      "用讲解板说明这个流程，导出 12 秒视频。",
+      "画出这个仓库的依赖与数据流。"
     ]
   }
 }

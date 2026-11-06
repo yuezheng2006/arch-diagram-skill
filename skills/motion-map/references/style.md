@@ -1,4 +1,4 @@
-# Atelier visual language
+# Motion Map visual language
 
 The engine implements this style; edit the spec for content and layout.
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Motion Map · 动态关系图"
+  short_description: "把关系、结构与过程整理成可编辑、可讲解、可导出的动态图"
+  default_prompt: "使用 $motion-map 把这些材料中的实体、关系和过程画成动态图，并说明连线含义。"

@@ -1,16 +1,18 @@
 {
-  "name": "arch-diagram",
-  "version": "1.2.3",
-  "description": "Turn a GitHub repo, article, PDF or local project into an animated Atelier architecture diagram: HTML, PNG, looping MP4/GIF or Mermaid, with a live trace log.",
+  "name": "motion-map",
+  "version": "2.0.0",
+  "description": "Animated relationship maps, architecture diagrams and illustrated explainers. Offline HTML, PNG, MP4/GIF and Mermaid.",
   "author": {
-    "name": "bassnova42"
+    "name": "yuezheng2006",
+    "url": "https://github.com/yuezheng2006"
   },
-  "homepage": "https://github.com/yuezheng2006/arch-diagram-skill",
-  "repository": "https://github.com/yuezheng2006/arch-diagram-skill",
+  "homepage": "https://github.com/yuezheng2006/motion-map-skill",
+  "repository": "https://github.com/yuezheng2006/motion-map-skill",
   "license": "MIT",
   "keywords": [
+    "relationships",
     "architecture",
-    "diagram",
+    "knowledge-map",
     "mermaid",
     "video",
     "skill"

@@ -1,0 +1,353 @@
+{
+  "lang": "zh-CN",
+  "kind": "relations",
+  "layout": "explainer",
+  "theme": "sketch",
+  "width": 1280,
+  "title": "Motion Map：让关系被看见",
+  "subtitle": "以一个虚构读书会为例：谁与谁有关联，谁与谁协作，什么促成了什么？",
+  "wireLegend": false,
+  "flows": [
+    {
+      "id": "member",
+      "label": "普通关联 · 无方向",
+      "color": "blue",
+      "dash": true,
+      "relation": "association"
+    },
+    {
+      "id": "collab",
+      "label": "双向协作",
+      "color": "green",
+      "relation": "bidirectional"
+    },
+    {
+      "id": "influence",
+      "label": "单向影响 / 产出",
+      "color": "purple",
+      "relation": "directed"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "book",
+      "x": 510,
+      "y": 230,
+      "w": 260,
+      "h": 94,
+      "title": "共读书目",
+      "shape": "callout",
+      "color": "amber",
+      "sub": "提供讨论与笔记的内容"
+    },
+    {
+      "id": "host",
+      "x": 80,
+      "y": 410,
+      "w": 250,
+      "h": 110,
+      "title": "主持人",
+      "shape": "event",
+      "color": "blue",
+      "sub": "组织讨论、协调安排",
+      "icon": "person"
+    },
+    {
+      "id": "members",
+      "x": 950,
+      "y": 410,
+      "w": 250,
+      "h": 110,
+      "title": "参与读者",
+      "shape": "event",
+      "color": "blue",
+      "sub": "阅读、讨论与反馈",
+      "icon": "chat"
+    },
+    {
+      "id": "club",
+      "x": 510,
+      "y": 410,
+      "w": 260,
+      "h": 130,
+      "title": "周末读书会",
+      "shape": "hub",
+      "color": "blue",
+      "sub": "虚构的教学场景"
+    },
+    {
+      "id": "notes",
+      "x": 510,
+      "y": 630,
+      "w": 260,
+      "h": 90,
+      "title": "共同读书笔记",
+      "shape": "worker",
+      "color": "green",
+      "sub": "大家整理的内容成果"
+    },
+    {
+      "id": "role-a",
+      "x": 40,
+      "y": 875,
+      "w": 145,
+      "h": 50,
+      "title": "成员",
+      "shape": "event",
+      "color": "blue"
+    },
+    {
+      "id": "role-b",
+      "x": 240,
+      "y": 875,
+      "w": 150,
+      "h": 50,
+      "title": "小组",
+      "shape": "event",
+      "color": "blue"
+    },
+    {
+      "id": "input-a",
+      "x": 464,
+      "y": 875,
+      "w": 130,
+      "h": 50,
+      "title": "阅读",
+      "shape": "event",
+      "color": "blue"
+    },
+    {
+      "id": "output-b",
+      "x": 686,
+      "y": 875,
+      "w": 130,
+      "h": 50,
+      "title": "笔记",
+      "shape": "worker",
+      "color": "green"
+    },
+    {
+      "id": "peer-a",
+      "x": 888,
+      "y": 875,
+      "w": 130,
+      "h": 50,
+      "title": "主持人",
+      "shape": "event",
+      "color": "blue"
+    },
+    {
+      "id": "peer-b",
+      "x": 1100,
+      "y": 875,
+      "w": 140,
+      "h": 50,
+      "title": "读者",
+      "shape": "event",
+      "color": "blue"
+    }
+  ],
+  "edges": [
+    {
+      "from": "club.t",
+      "to": "book.b",
+      "label": "共读对象",
+      "flow": "member",
+      "labelPos": [
+        710,
+        374
+      ]
+    },
+    {
+      "from": "club.l",
+      "to": "host.r",
+      "label": "角色关联",
+      "flow": "member",
+      "labelPos": [
+        420,
+        450
+      ]
+    },
+    {
+      "from": "club.r",
+      "to": "members.l",
+      "label": "成员参与",
+      "flow": "member",
+      "labelPos": [
+        860,
+        450
+      ]
+    },
+    {
+      "from": "host.t",
+      "to": "members.t",
+      "label": "共同讨论与协调",
+      "flow": "collab",
+      "via": [
+        [
+          205,
+          350
+        ],
+        [
+          1075,
+          350
+        ]
+      ],
+      "labelPos": [
+        920,
+        337
+      ]
+    },
+    {
+      "from": "book.l",
+      "to": "notes.l",
+      "label": "提供内容",
+      "flow": "influence",
+      "rail": "x:390",
+      "labelPos": [
+        433,
+        601
+      ]
+    },
+    {
+      "from": "club.b",
+      "to": "notes.t",
+      "label": "共同整理",
+      "flow": "influence",
+      "labelPos": [
+        710,
+        590
+      ]
+    },
+    {
+      "from": "notes.r",
+      "to": "members.b",
+      "label": "阅读与反馈",
+      "flow": "collab",
+      "via": [
+        [
+          870,
+          675
+        ],
+        [
+          870,
+          570
+        ],
+        [
+          1075,
+          570
+        ]
+      ],
+      "labelPos": [
+        967,
+        557
+      ]
+    },
+    {
+      "from": "role-a.r",
+      "to": "role-b.l",
+      "label": "隶属",
+      "flow": "member"
+    },
+    {
+      "from": "input-a.r",
+      "to": "output-b.l",
+      "label": "形成",
+      "flow": "influence"
+    },
+    {
+      "from": "peer-a.r",
+      "to": "peer-b.l",
+      "label": "讨论",
+      "flow": "collab"
+    }
+  ],
+  "groups": [
+    {
+      "id": "community",
+      "x": 16,
+      "y": 140,
+      "w": 1248,
+      "h": 610,
+      "label": "场景关系网：同一群人，不同关系可以同时存在",
+      "step": "1",
+      "solid": true,
+      "color": "faint"
+    },
+    {
+      "id": "association-key",
+      "x": 16,
+      "y": 790,
+      "w": 400,
+      "h": 244,
+      "label": "关联：相连，但没有流向",
+      "step": "2",
+      "solid": true,
+      "color": "faint"
+    },
+    {
+      "id": "directed-key",
+      "x": 440,
+      "y": 790,
+      "w": 400,
+      "h": 244,
+      "label": "单向：从来源指向结果",
+      "step": "3",
+      "solid": true,
+      "color": "faint"
+    },
+    {
+      "id": "bidirectional-key",
+      "x": 864,
+      "y": 790,
+      "w": 400,
+      "h": 244,
+      "label": "双向：彼此交流与协作",
+      "step": "4",
+      "solid": true,
+      "color": "faint"
+    }
+  ],
+  "notes": [
+    {
+      "id": "association-note",
+      "x": 40,
+      "y": 955,
+      "w": 350,
+      "text": "无箭头、无流动光点。\n表达联系或归属，不暗示因果。",
+      "align": "left"
+    },
+    {
+      "id": "directed-note",
+      "x": 464,
+      "y": 955,
+      "w": 350,
+      "text": "单箭头、沿方向移动的光点。\n强调有依据的影响、依赖或产出。",
+      "align": "left"
+    },
+    {
+      "id": "bidirectional-note",
+      "x": 888,
+      "y": 955,
+      "w": 350,
+      "text": "双箭头、两个方向的光点。\n说明关系是相互的，而非单向分派。",
+      "align": "left"
+    },
+    {
+      "id": "boundary",
+      "x": 24,
+      "y": 1065,
+      "w": 1232,
+      "text": "读图约定：连线文字决定关系含义；颜色区分关系类型。光点强调方向，不代表真实事件、频率或实测数据。",
+      "align": "left"
+    },
+    {
+      "id": "provenance",
+      "x": 24,
+      "y": 1093,
+      "w": 1232,
+      "text": "此图为自拟的通用关系建模示例；同样的方法可用于人物组织、知识联系、依赖网络与系统架构。",
+      "align": "left"
+    }
+  ]
+}

@@ -107,7 +107,7 @@ Wire meaning comes from the declared `flows`: each kind of relationship gets one
 - rail items colliding
 - warning only: the number of wire crossings
 
-## Atelier presentation extension
+## Motion Map presentation extension
 
 `presentation: true` enables the cream-paper presentation layout: a large left-aligned title, muted terracotta step numbers, left-aligned cards and section frames. Start content at y ≥ 210 to clear the larger header. Give cards ≥ 144px height and ≥ 280px width. Set optional node `step` to a short string such as `"01"`; it is escaped as plain text. Omit the mode for compact upstream maps.
 
@@ -122,3 +122,9 @@ Set `layout: "explainer"` (omit `presentation`). If no theme is supplied, the bu
 Node `shape`: `person`, `stack`, `hub`, `router`, `worker`, `store`, `event`, `callout`. Node `icon`: `person`, `chat`, `code`, `mail`, `tool`, `cloud`, `store`, `laptop`, `eye`. Unknown values render as a normal card or no icon. Person nodes need at least 110px height; stack nodes visually extend 20px up and left, so leave that space clear. Compact cards (h<75) use a smaller heading. Use ≥140px for title, subtitle and two explanatory lines; omit the subtitle for tight nodes.
 
 Groups are panel backgrounds; wires render above them, while cards and annotations render above wires. Dashed cards remain dashed. Avoid repeating literal text from a reference image: preserve its communication devices while deriving the content from cited sources.
+
+## General relationship maps
+
+Set `kind: "relations"` to label the legend as relationships. `flows[].relation` or `edges[].relation` accepts `directed`, `bidirectional`, `association`. An edge overrides the flow's relation. Explicit relation semantics override contradictory `arrow` and, for association, `packet` flags. With no relation set, legacy fields still work.
+
+Association has no arrowheads, packets, moving dashed strokes or arrival logs. Bidirectional has two arrowheads and two packet streams unless `packet: false`. Directed has a forward arrow. The Mermaid export uses `---`/`-.-`, `<-->`/`<-.->`, or `-->`/`-.->` respectively. Unknown relation names fail before the output file is written. See [relationships.md](relationships.md).

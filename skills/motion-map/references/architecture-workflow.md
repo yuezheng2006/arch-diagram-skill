@@ -1,42 +1,6 @@
----
-name: arch-diagram
-description: Turn any source — a GitHub repo, a technical article or blog URL, a PDF, a local project folder, or pasted notes — into a polished light architecture studio architecture diagram with a structure fitted to the content, colors by element kind and typed animated wires. Outputs an interactive HTML page plus, on request, a PNG image, an MP4 video of any length, an animated GIF, or an editable Mermaid flowchart. Use when the user says 架构图 / 画架构 / 系统架构 / 流程图 / 画一下这个仓库 / 这篇文章画成图 / 输出成图片 / 输出成视频 / 动图 / mermaid / architecture diagram / system diagram / draw how X works, gives a repo or article and wants it visualized, asks to turn an existing diagram into an image, video, GIF or Mermaid, or runs /arch-diagram.
----
+# Source reading, architecture layout and exports
 
-# arch-diagram
-
-This skill reads a source, models its architecture as a JSON spec, and renders the spec with a fixed engine. The engine guarantees the look; your job is to get the content right and lay it out cleanly.
-
-This skill works in Claude Code, Codex and other agents that load `SKILL.md` skills. Paths below use `$SK` for this skill's base directory: the folder this `SKILL.md` is in, e.g. `~/.claude/skills/arch-diagram`, `~/.codex/skills/arch-diagram`, or the `skills/arch-diagram` folder of an installed plugin. Write the full path in commands.
-
-Requirements: Node ≥ 18 and Chrome, Chromium or Edge (set `CHROME=/path` when it is somewhere unusual). `ffmpeg` is needed only for MP4 and GIF output.
-
-- `scripts/build.mjs <spec.json> <out.html>`: validates ids and anchors, then inlines everything into one HTML file
-- `scripts/export.mjs <out.html> <out.png|.mp4|.gif|.mmd|.md> … [--seconds N] [--scale K]`: exports a built diagram to other formats. See §6
-- `scripts/check.mjs <out.html> [shot.png]`: headless Chrome self-check plus a screenshot. Exit code 1 means there are layout issues
-- `references/spec.md`: the complete spec schema. **Read it before writing a spec.**
-- `references/style.md`: the visual style, for reference only. The engine already implements it
-- `examples/`: `rea.json` (layered system read from a repo: caller → entry → core group → providers → shared base, typed `flows`, a `log.live` trace), `plausible.json` (dual pipeline read from a repo: write and read lanes as groups meeting at a shared store, an in-memory state band between them, a background band, width 1180, typed `flows`), `elephant-goldfish.json` (process with loops from an article: phase columns, containment groups, a central artifact band, typed `flows`, a `log.live` trace with per-edge `log` text). They show engine features (rail, rows, pipelines, fan-outs, edge rails, log), not a layout to copy
-
-## Custom edition: Atelier
-
-Default to the bundled Atelier design: warm ivory dotted canvas, softly rounded modules, restrained semantic accents, system fonts with Chinese support, and a compact motion/size toolbar. Keep the engine's measured typography and spacing; do not add decorative nodes or invent operational status for visual effect. The toolbar is excluded from screenshots and video. Respect reduced motion; the page remains useful without animation.
-
-For a product presentation, use `presentation: true` with node `step` labels when appropriate (see the spec reference). Separate information structure from visual style: choose the progression or architecture first, then a restrained technical presentation. Prefer a concise title, a one-line explanation, 3–5 semantic colors and generous routing gaps. Dense repository maps can keep compact tables. Always inspect the actual screenshot at full size and verify the narrow-window experience using “Actual size” if text becomes too small.
-
-## Theme presets
-
-Choose a theme independently of the content layout: `paper` (warm editorial, default), `porcelain` (cool product documentation), `blueprint` (dark engineering), `graphite` (neutral dark presentation), or `sketch` (whiteboard palette). Set top-level `theme`, or use `build.mjs spec.json out.html --theme blueprint`. HTML provides a labeled theme selector and saves the choice in the URL. Wire, arrow and packet colors update without restarting the animation. The standalone file has no network dependencies.
-
-For exports, `export.mjs out.html out.png out.mp4 out.mmd --theme blueprint` overrides the embedded default. A browser URL choice does not modify the HTML file on disk, so pass the matching export flag. Without the flag exports follow the embedded spec. The Mermaid exporter reads the same embedded token registry. See `examples/dsh-superagent.json` and the published `docs/dsh-superagent.sources.md` for a sourced architecture example separating prototype mechanisms from article-level directions.
-
-## Illustrated explainer mode
-
-When the user wants a hand-drawn reference, a teaching graphic, or a visual explanation rather than only a dependency map, set `layout: "explainer"` and prefer the `sketch` theme. See `examples/dsh-explainer.json` for agent coordination or `examples/music-separation.json` for an audio-processing explainer with a dual-branch model and overlap/add pipeline. This is a different information structure, not a theme color swap: use numbered panels for a before/after comparison, a central mechanism, and small context or time-sequence diagrams. Keep each panel focused on one question. No need to use every panel archetype for every subject.
-
-Use `groups` as panels with `step` and `label`; keep each panel's content at least 60px below its top. `shape` selects a semantic visual (`person`, `stack`, `hub`, `router`, `worker`, `store`, `event`, `callout`). Optional `icon` selects built-in line art (`person`, `chat`, `code`, `mail`, `tool`, `cloud`, `store`, `laptop`, `eye`). These are whitelisted primitives, not arbitrary SVG/HTML. Shapes and icons are repo-native vector code and remain animated/editable. A plain palette choice does not rearrange the composition.
-
-Do not present design directions as shipped components, or depict work directories as security sandboxes. Put article-only designs in a labeled section and use dashed borders. Label simulation as simulation. Verify that the wires sit above panel backgrounds and below nodes, then inspect the screenshot; a clean geometry report cannot detect all painting-order mistakes.
+Detailed workflow adapted from the MIT upstream arch-diagram-skill. Read this for repository architecture and complex source analysis.
 
 ## 1. Get the source
 
@@ -121,7 +85,7 @@ node $SK/scripts/check.mjs <dir>/<slug>.html <tmp>/<slug>.png
 
 - **Where to save**:
   - The source is the current project → `./architecture/<slug>.html`
-  - Otherwise → `~/Documents/arch-diagrams/<slug>/<slug>.html`, unless the user named a place
+  - Otherwise → `~/Documents/motion-maps/<slug>/<slug>.html`, unless the user named a place
   - Keep `<slug>.spec.json` next to the HTML so later edits only touch the spec
   - Put the check screenshot in `<tmp>`, not next to the HTML
 - Export the formats the user asked for (§6), next to the HTML with the same slug.

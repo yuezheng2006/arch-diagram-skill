@@ -131,7 +131,7 @@ html:lang(ja) body, html:lang(ja) .lbl { font-family: "JetBrains Mono", "SF Mono
 html:lang(ko) body, html:lang(ko) .lbl { font-family: "JetBrains Mono", "SF Mono", Menlo, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", monospace; }
 html:lang(th) body, html:lang(th) .lbl { font-family: "JetBrains Mono", "SF Mono", Menlo, Thonburi, "Leelawadee UI", "Noto Sans Thai", monospace; }
 
-/* Atelier: calm surfaces, semantic accents, offline system fonts. */
+/* Motion Map: calm surfaces, semantic accents, offline system fonts. */
 body { background: var(--page); min-height: 100vh; }
 #fit { border: 1px solid var(--border); border-radius: 18px; background: var(--bg); box-shadow: 0 18px 60px var(--shadow); }
 #stage { background-image: radial-gradient(var(--grid) .65px, transparent .65px); background-size: 20px 20px; }

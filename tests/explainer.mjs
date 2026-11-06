@@ -3,10 +3,10 @@ import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import assert from 'node:assert/strict';
-import { findChrome, runChrome, readDiag, fileUrl } from '../skills/arch-diagram/scripts/lib.mjs';
+import { findChrome, runChrome, readDiag, fileUrl } from '../skills/motion-map/scripts/lib.mjs';
 const dir = mkdtempSync(join(tmpdir(),'atelier-explainer-'));
 try {
-  const spec = JSON.parse(readFileSync('skills/arch-diagram/examples/dsh-explainer.json','utf8'));
+  const spec = JSON.parse(readFileSync('skills/motion-map/examples/dsh-explainer.json','utf8'));
   delete spec.theme;
   const json = join(dir,'spec.json'), html = join(dir,'diagram.html');
   writeFileSync(json,JSON.stringify(spec));

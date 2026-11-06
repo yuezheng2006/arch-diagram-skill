@@ -4,6 +4,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { RELATION_TYPES } from './relations.mjs';
 
 const [specPath, outPath, ...args] = process.argv.slice(2);
 const themes = JSON.parse(readFileSync(join(dirname(fileURLToPath(import.meta.url)), '..', 'assets', 'themes.json'), 'utf8'));
@@ -31,6 +32,9 @@ if (spec.theme && !Object.hasOwn(themes, spec.theme)) { console.error('unknown t
 
 // cheap structural checks; layout problems are caught later by check.mjs
 const errs = [];
+for (const item of [...(spec.flows || []), ...(spec.edges || [])]) {
+  if (item.relation != null && !RELATION_TYPES.has(item.relation)) errs.push('unknown relation: ' + String(item.relation));
+}
 const ids = new Set();
 const seen = id => { if (ids.has(id)) errs.push(`duplicate id "${id}"`); ids.add(id); };
 for (const n of spec.nodes || []) {
@@ -61,7 +65,7 @@ const fill = {
   __THEMES__: JSON.stringify(themes).replace(/</g, '\\u003c'),
   // keep "</script>" inside strings from closing the tag early
   __SPEC__: JSON.stringify(spec, null, 1).replace(/</g, '\\u003c'),
-  __ENGINE__: read('engine.js'),
+  __ENGINE__: readFileSync(join(assets, '..', 'scripts', 'relations.mjs'), 'utf8').replace(/^export /gm, '') + '\n' + read('engine.js'),
 };
 const html = read('template.html').replace(/__LANG__|__TITLE__|__CSS__|__SPEC__|__THEMES__|__ENGINE__/g, k => fill[k]);
 mkdirSync(dirname(resolve(outPath)), { recursive: true });
